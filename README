@@ -344,3 +344,112 @@ the manual available on the ORM Designer Website located here:
 When creating new modules, you will want to check how the other modules 
 were setup first and duplicate the paths to the YML and XML files so the 
 system will work properly for you. 
+
+HOW TO USE THE TAGGABLE BEHAVIOR
+================================
+
+First, if you are going to be using ORM Designer you will want to read the README file in:
+
+	/application/doctrine/orm_designer/config/
+
+You can use our Doctrine Taggable behavior on any entities you create in your object creation.  
+
+In your Doctrine YML code the model would look like this:
+
+	Model:
+	  actAs:
+		Timestampable: 
+		Taggable: 
+	  tableName: model
+	  connection: default
+	  columns:
+		...
+		
+In your Doctrine PHP code the model would look like this:
+
+	abstract class BaseModel extends Doctrine_Record
+	{
+		public function setTableDefinition()
+		{
+			// typical model code goes here
+		}
+
+		public function setUp()
+		{
+			// typical model code goes here, but add
+			$taggable0 = new Taggable();
+			$this->actAs($taggable0);
+		}
+	}
+
+Once that is setup you can start using the new behaviour. Then you can do stuff like this in your CodeIgniter Models:
+
+    $model = new Model();
+    $model->foo = 'bar';
+    $model->setTags(array('tags','are','cool'));
+    $model->save();
+
+To fetch tags is a bit more complicated.  In your CodeIgniter Models __construct() menthod you will need a variable set like this:
+
+    $this->_tags = NULL;
+
+Then you will need a functions like this in that model:
+
+    public function my_tags($format=NULL)
+    {
+        return ($format == 'json') ? json_encode($this->_tags) : $this->tags;
+    }
+	
+Then anytime you want to get a specific ID from a CodeIgniter Model, you can fetch its tags pretty easily in your model's code that fetches the ID with something like this:
+
+	public function get($id=NULL)
+	{
+		// get single id from model
+		if ($id)
+		{
+			try
+			{
+				$model = Doctrine_Core::getTable('Model')->findOneById($id);
+				$model->_tags = $model->getTagNames();
+
+				return $model;
+			}
+			catch (Doctrine_Connection_Exception $e)
+			{
+				log_message('error', $e->getMessage());
+				return array(
+					'error' => $e->getMessage(),
+					'code' => $e->getCode()
+				);
+			}
+		}
+		// fetch all from model
+		else
+		{
+			try
+			{
+				return Doctrine_Query::create()
+					->from('Model t')
+					->orderBy('t.name ASC')
+					->execute(array(), Doctrine_Core::HYDRATE_ARRAY);
+			}
+			catch (Doctrine_Connection_Exception $e)
+			{
+				log_message('error', $e->getMessage());
+				return array(
+					'error' => $e->getMessage(),
+					'code' => $e->getCode()
+				);
+			}
+		}
+	}
+	
+Now in your CodeIgniter Controllers you can use your models pretty easily.
+
+	$this->load->model('codeigniter/my_model');
+	$this->load->model('codeigniter/tag_model');
+	
+	// first get the record
+	$data['model'] = $this->my_model->get($id);
+	$data['all_tags'] = $this->tag_model->get_all_tags('json');
+	$data['existing_tags'] = $this->my_model->my_tags('json');
