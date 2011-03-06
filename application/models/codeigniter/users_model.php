@@ -17,7 +17,7 @@ if (!defined('BASEPATH'))
 class Users_model extends MI_Model
 {
     const PHPASS_HASH_STRENGTH = 8;
-    const PHPASS_HASH_PORTABLE = FALSE;
+    const PHPASS_HASH_PORTABLE = TRUE;
 
     function __construct()
     {
@@ -85,7 +85,7 @@ class Users_model extends MI_Model
             $user->role = $data['role'];
             $user->activated = 1;
             $user->save();
-            
+
             return TRUE;
 	}
 	catch (Doctrine_Connection_Exception $e)
@@ -123,7 +123,7 @@ class Users_model extends MI_Model
     {
 	try
 	{
-	    
+
 
             $user = Doctrine_Core::getTable('User')->findOneById($id);
             $user->username = $data['username'];
@@ -134,7 +134,7 @@ class Users_model extends MI_Model
                 $hashed_password = $hasher->HashPassword($data['password']);
                 $user->password = $hashed_password;
             }
-            
+
             $user->display_name = $data['display_name'];
             $user->email = $data['email'];
             $user->role = $data['role'];
