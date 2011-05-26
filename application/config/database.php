@@ -50,6 +50,7 @@ $framework_ini = (array) unserialize(FRAMEWORK_INI);
   |	['swap_pre'] A default table prefix that should be swapped with the dbprefix
   |	['autoinit'] Whether or not to automatically initialize the database.
   |	['stricton'] TRUE/FALSE - forces "Strict Mode" connections good for ensuring strict SQL while developing
+  |	['unix_socket'] Path to Unix Socket '/tmp/mysql5.sock'. Leave Empty if you are using the default.
   |
   | The $active_group variable lets you choose which connection group to
   | make active.  By default there is only one group (the 'default' group).
@@ -76,6 +77,7 @@ $db['default']['dbcollat'] = $framework_ini['database']['dbcollat'];
 $db['default']['swap_pre'] = $framework_ini['database']['swap_pre'];
 $db['default']['autoinit'] = $framework_ini['database']['autoinit'];
 $db['default']['stricton'] = $framework_ini['database']['stricton'];
+$db['default']['unix_socket'] = $framework_ini['database']['unix_socket'];
 
 /* End of file database.php */
 /* Location: ./application/config/database.php */

@@ -1,24 +1,9 @@
-# Cache
-!/system/cache/.htaccess
-!/system/cache/index.html
-/system/cache/*
-
-# System Logs
-/system/logs/*
-
-# User uploads
-/assets/uploads/*
-
-# Local Schema Development
-/application/doctrine/dev_local/fixtures/*
-/application/doctrine/dev_local/migrations/*
-/application/doctrine/dev_local/models/*
-/application/doctrine/dev_local/schemas/*
-
 ############################################
 ## Generic System Ignores
 ############################################
 syntax: glob
+
+!.gitignore
 
 # build directories and files
 #hg syntax

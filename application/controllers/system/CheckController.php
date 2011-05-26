@@ -66,7 +66,7 @@ class CheckController extends CI_Controller
             ? 'accept'
             : 'exclamation';
 
-    $data['spl_msg'] = (function_exists('spl_autoload_register'))
+    	$data['spl_msg'] = (function_exists('spl_autoload_register'))
             ? ''
             : '<strong>ERROR:</strong> The function spl_autoload_register does not exist on this server.  This function is required to autoload class files.';
 

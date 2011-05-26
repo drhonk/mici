@@ -31,6 +31,9 @@ class Pear_doctrine
         $memcache_port = ( !empty($framework_ini['database']['memcache_port']))
             ? $framework_ini['database']['memcache_port']
             : 11211;
+		$unix_socket = ( !empty($framework_ini['database']['unix_socket']))
+            ? ';unix_socket='.$framework_ini['database']['unix_socket']
+            : '';
 
         // Fetch PEAR Library
         require_once APPPATH . 'libraries'.DIRECTORY_SEPARATOR.'Doctrine'.DIRECTORY_SEPARATOR.'Doctrine.php';
@@ -45,7 +48,7 @@ class Pear_doctrine
             // Check if Database Object Exists
             if (!empty($dbdriver) && !empty($username) && !empty($hostname) && !empty($database))
             {
-                $conn = Doctrine_Manager::connection("{$dbdriver}://{$username}:{$password}@{$hostname}/{$database}", 'default');
+                $conn = Doctrine_Manager::connection("{$dbdriver}://{$username}:{$password}@{$hostname}/{$database}{$unix_socket}", 'default');
                 $manager = Doctrine_Manager::getInstance();
 
                 // Configure Doctrine
@@ -89,7 +92,7 @@ class Pear_doctrine
                 {
                     try
                     {
-                        $pdo = new PDO("mysql:host={$hostname};dbname={$database}", $username, $password);
+                        $pdo = new PDO("mysql:host={$hostname};dbname={$database}{$unix_socket}", $username, $password);
                         unset($pdo);
                     }
                     // database does not exist, lets see if we can create it

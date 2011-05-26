@@ -73,7 +73,7 @@ if (!defined('FRAMEWORK_CONFIG_INI') || !getenv('FRAMEWORK_CONFIG_INI'))
 {
     $framework_config_ini = getenv('FRAMEWORK_CONFIG_INI')
         ? getenv('FRAMEWORK_CONFIG_INI')
-        : $_SERVER['DOCUMENT_ROOT'] . '/config/framework.ini';
+        : APPPATH . 'config/framework.ini';
     if (!file_exists($framework_config_ini))
     {
         exit('ERROR: Unable to locate configuration file.  Looking for ' . $framework_config_ini);

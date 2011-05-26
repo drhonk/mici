@@ -278,14 +278,16 @@ $config['sess_time_to_update'] = 300;
   | Cookie Related Variables
   |--------------------------------------------------------------------------
   |
-  | 'cookie_prefix' = Set a prefix if you need to avoid collisions
-  | 'cookie_domain' = Set to .your-domain.com for site-wide cookies
+  | 'cookie_prefix' =  Set a prefix if you need to avoid collisions
+  | 'cookie_domain' =  Set to .your-domain.com for site-wide cookies
   | 'cookie_path'   =  Typically will be a forward slash
+  | 'cookie_secure' =  Cookies will only be set if a secure HTTPS connection exists.
   |
  */
 $config['cookie_prefix'] = $framework_ini['config']['cookie_prefix'];
 $config['cookie_domain'] = $framework_ini['config']['cookie_domain'];
 $config['cookie_path'] = $framework_ini['config']['cookie_path'];
+$config['cookie_secure'] = $framework_ini['config']['cookie_secure'];
 
 /*
   |--------------------------------------------------------------------------
@@ -373,6 +375,16 @@ $config['rewrite_short_tags'] = TRUE;
   |
  */
 $config['proxy_ips'] = '';
+
+/*
+  |--------------------------------------------------------------------------
+  | Tracking Enabled
+  |--------------------------------------------------------------------------
+  |
+  | Enables default MICI Framework Tracking of User Activity
+  |
+ */
+$config['tracking_enabled'] = $framework_ini['config']['tracking_enabled'];
 
 
 /* End of file config.php */

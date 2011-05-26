@@ -106,6 +106,7 @@ class MI_Controller extends CI_Controller
         // load config data
         $this->load->config('auth');
         $this->load->config('paths');
+		$this->load->config('config');
 
         // load helpers
         $this->load->helper('url');
@@ -117,8 +118,13 @@ class MI_Controller extends CI_Controller
         $this->load->library('session');
         $this->load->library('auth');
         $this->load->library('form_validation');
-        $this->load->library('activity_tracker');
         $this->load->library('user_agent');
+
+		// check if we should use native user tracking
+		if($this->config->item('tracking_enabled'))
+		{
+			$this->load->library('activity_tracker');
+		}
 
         // load required languages
         $this->lang->load('auth');
@@ -181,8 +187,11 @@ class MI_Controller extends CI_Controller
         // Make sure Doctrine DQL callbacks don't prevent items with expires on or publish on from being shown in the admin interface
         Doctrine_Manager::getInstance()->setAttribute(Doctrine::ATTR_USE_DQL_CALLBACKS, false);
 
-        // track activity
-        $this->activity_tracker->track();
+        // check if we should use native user tracking
+		if($this->config->item('tracking_enabled'))
+		{
+			$this->activity_tracker->track();
+		}
     }
 
     function show_404()

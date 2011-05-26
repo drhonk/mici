@@ -11,7 +11,29 @@
 		<attribute name="className" type="string" />
             </attribute>
 	    <attribute name="AutoExpire">
+            </attribute>  
+            <!-- START TrackAuthor -->
+            <attribute name="TrackAuthor">
+		<attribute name="created">
+                    <attribute name="name" type="string" default="created_by" help="The name of the column."/>
+                    <attribute name="alias" type="string"/>
+                    <attribute name="disabled" type="bool" default="false" help="Whether or not to disable the created author."/>
+                    <attribute name="options" type="list" child-type="string" help="Any additional options for the column.">
+                        <attribute name="notnull" type="bool" default="false"/>
+                    </attribute>
+                </attribute>
+                <attribute name="updated">
+                    <attribute name="name" type="string" default="updated_by" help="The name of the column."/>
+                    <attribute name="alias" type="string"/>
+                    <attribute name="disabled" type="bool" default="false" help="Whether or not to disable the updated author"/>
+                    <attribute name="expression" type="bool" default="false" help="Expression to use to set the column value."/>
+                    <attribute name="onInsert" type="bool" default="true" help="Whether or not to set the updated author when the record is first inserted."/>
+                    <attribute name="options" type="list" child-type="string" help="Any additional options for the column.">
+                        <attribute name="notnull" type="bool" default="false"/>
+                    </attribute>
+                </attribute>
             </attribute>
+            <!-- END TrackAuthor -->
         </attribute>
     </orm-configuration>
 </orm-designer-configuration>
