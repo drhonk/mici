@@ -1,19 +1,19 @@
 # Cache
 !/system/cache/.htaccess
 !/system/cache/index.html
-/system/cache/*
+/system/cache/**.*
 
 # System Logs
-/system/logs/*
+/system/logs/**.*
 
 # User uploads
-/assets/uploads/*
+/assets/uploads/**.*
 
 # Local Schema Development
-/application/doctrine/dev_local/fixtures/*
-/application/doctrine/dev_local/migrations/*
-/application/doctrine/dev_local/models/*
-/application/doctrine/dev_local/schemas/*
+/application/doctrine/dev_local/fixtures/*.yml
+/application/doctrine/dev_local/migrations/*.php
+/application/doctrine/dev_local/models/*.php
+/application/doctrine/dev_local/schemas/*.yml
 
 ############################################
 ## Generic System Ignores
