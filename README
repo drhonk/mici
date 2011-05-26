@@ -50,6 +50,8 @@ web
 This should be the only web accessible folder of the bunch. This folder 
 cannot be deleted.
 
+
+
 INSTALLING THE FRAMEWORK FOR LOCAL DEVELOPMENT 
 ==============================================
 
@@ -88,7 +90,9 @@ server.  You can use an existing folder that is already apart of apache,
 just not one that is in the document root.
 
 There are three folders that you will need to create manually.
-These folders are already setup in the _install/template/ folder._
+These folders are already setup in the _install/template/ folder._ Once
+you copy them over, make sure you set their permissions so they can have
+files written to them.
 
 Once you have these folders created you will need to create a new folder
 in each with the same name you used in your web root when you added
@@ -96,6 +100,13 @@ MICI.  That would be "mici" for this writeup.
 
 The purpose of this is so you can have more than one installation of
 MICI without creating any issues with others installations.
+
+You will also need to set write permissions to to following folders:
+
+	/application/doctrine/dev_local/fixtures
+	/application/doctrine/dev_local/migrations
+	/application/doctrine/dev_local/models
+	/application/doctrine/dev_local/schemas
 
 Step 2 - Apache Configuration
 -----------------------------
@@ -197,8 +208,8 @@ Please note that if you are using http://localhost/ this will use the
 remote_framework.ini file and all links in Codeigniter will use your 
 IP Address instead of localhost._
 
-Step 4 
------- 
+Step 4 - MICI Installation
+-------------------------- 
 
 Once you have finished setting everything up, you can easily install the 
 core database, tables and default fixtures by pointing your browser to: 
@@ -210,8 +221,8 @@ placed your installation of this framework. This System Check will also
 tell you if there were any problem preventing a successful install and 
 suggest actions to take to correct your installation. 
 
-Step 5
------- 
+Step 5 - Miscellaneous Configuration
+------------------------------------
 
 There are a few optional tools enabled for you to develop easily that 
 are not already built into either Doctrine of CodeIgniter (CI). 
@@ -253,6 +264,8 @@ The API Keys are stored in the `apikey` table in your database. By
 default, the first key is enabled and assigned to our company. You can 
 write your own code so assign API keys to other users however you wish. 
 
+
+
 SETTING UP GEO LOCATION SERVICE
 =============================== 
 
@@ -264,6 +277,8 @@ http://www.ipinfodb.com/register.php Once you get an API Key from them,
 update your framework.ini files ipinfodb_apikey variable. You do not 
 need to do this, but your you will lose capturing this information in 
 the database if it is not setup. 
+
+
 
 WORKING WITH SYSTEM SECTION
 =========================== 
@@ -358,6 +373,8 @@ than likely be the first area of the site you access once you have
 finished setting up your system as outlined in INSTALLING THE FRAMEWORK 
 FOR LOCAL DEVELOPMENT. 
 
+
+
 WORKING WITH ADMIN SECTION
 ========================== 
 
@@ -370,6 +387,8 @@ To login use the default administrator login info:
 
 	username: admin
 	password: password 
+
+
 
 WORKING WITH ORM DESIGNER
 ========================= 
@@ -390,6 +409,8 @@ the manual available on the ORM Designer Website located here:
 When creating new modules, you will want to check how the other modules 
 were setup first and duplicate the paths to the YML and XML files so the 
 system will work properly for you. 
+
+
 
 HOW TO USE THE TAGGABLE BEHAVIOR
 ================================
