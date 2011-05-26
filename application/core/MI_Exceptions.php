@@ -43,7 +43,7 @@ class MI_Exceptions
      * Constructor
      *
      */
-    function MI_Exceptions()
+    function __construct()
     {
         $this->ob_level = ob_get_level();
 
@@ -53,7 +53,7 @@ class MI_Exceptions
          * Fetch Configuration for Framework INI File
          */
         $this->framework_ini = (array) unserialize(FRAMEWORK_INI);
-        $this->log_threshold = $framework_ini['config']['log_threshold'];
+        $this->log_threshold = $this->framework_ini['config']['log_threshold'];
     }
 
     /**
