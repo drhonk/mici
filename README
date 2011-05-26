@@ -1,3 +1,71 @@
+INTRODUCTION
+============
+
+What is MICI?  MICI stands for Manifest Interactive CodeIgniter. 
+
+MICI takes the already awesome CodeIgniter framework and integrates
+in a few big pieces that make it just that much more awesome!
+
+Simple Setup
+------------
+
+All the configuration to get up and running is already created for you.
+Just update some basic information and get up and running in no time.
+
+In fact, MICI will automatically install itself on a server once
+you have everything setup.
+
+This also means that as you build out your project, it will also
+automatically install itself with all your customizations.
+
+Easily Share Source Code across Multiple Servers & Developers
+-------------------------------------------------------------
+
+One issue we have with almost all frameworks out there is that it is
+near impossible to use them across multiple servers and developers.
+Usually you end up with some config file that gets hacked to bits with
+conditional logic checking to see which machine it is on so it can use
+correct information for that specific server. This also leads to usernames 
+and passwords getting shared across all the development team.
+
+MICI changes that by taking all of the variables in the CodeIgniter
+/application/config/ files and porting them into a single INI file.
+
+This INI gets stored locally in a non public location where it gets loaded
+into CodeIgniter.
+
+This means everyone on the development team can share the exact same code
+and just setup Apache to know where to look for that specific servers INI file.
+
+No passwords are shared and no hacking of the config code is required.
+
+SIMPLE & EASY!
+
+Integration with Doctrine 1.2
+-----------------------------
+
+MICI is already setup to run seamlessly with Doctrine 1.2. The library is
+already installed and you do not need to worry about getting it setup on
+your server.
+
+Automatically build your Models with ORM Designer
+-------------------------------------------------
+
+The best part of MICI is that is has a custom system admin GUI where you can
+automatically generate your models based on the YML files you generate from
+an amazing program called ORM Designer http://www.orm-designer.com/
+
+ORM Designer works on PC's & Macs ( using Wine ) and makes building your
+custom models and managing their relationships a breeze.
+
+Pre-built Expandable CMS
+------------------------
+
+Use our CMS to manage your application.  You can optionally expand the CMS with
+your own code using existing templates to easily see what is needed.
+
+
+
 FRAMEWORK OVERVIEW
 ================== 
 
