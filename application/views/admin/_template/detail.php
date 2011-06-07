@@ -27,10 +27,15 @@
                 <div><?PHP echo $error_message; ?></div>
             </div>
         <?PHP endif; ?>
-            <?PHP
+            <div class="notification png_bg" id="validation_notification" style="display: none;">
+                <a href="#" class="close"><img src="<?PHP echo $media_url;?>admin/images/icons/cross_grey_small.png" title="Close this notification" alt="close" /></a>
+                <div>&nbsp;</div>
+            </div>
+			<?PHP
             $attributes = array(
                 'name' => '@VAR@_management',
-                'id' => '@VAR@_management'
+                'id' => '@VAR@_management',
+				'onsubmit' => 'return validate()'
             );
             echo form_open(current_url(), $attributes);
             ?>
@@ -39,24 +44,33 @@
                         <tr>
                             <td colspan="2">
                                 <input class="button" type="submit" value="Submit"/>
-                                <div class="clear"></div>
+                                <span class="required">* Required Field</span>
+								<div class="clear"></div>
                             </td>
                         </tr>
                     </tfoot>
                     <tbody>
                         <tr>
-                            <td width="125" class="right"><label for="name">Name:</label></td>
+                            <td width="125" class="right"><span class="required">*</span><label for="name">Name:</label></td>
                             <td><input type="text" name="name" id="name" class="text-input medium-input" value="<?PHP echo $@VAR@->name; ?>" /></td>
                         </tr>
                     </tbody>
                 </table>
                 <div class="clear"></div>
             </form>
-            <div class="notification png_bg" id="validation_notification" style="display: none;">
-                <a href="#" class="close"><img src="<?PHP echo $media_url;?>admin/images/icons/cross_grey_small.png" title="Close this notification" alt="close" /></a>
-                <div>&nbsp;</div>
-            </div>
         </div>
         <div class="tab-content" id="help"></div>
     </div>
 </div>
+<script type="text/javascript">
+function validate(){
+    notification('#validation_notification', 'close');
+
+    if($('#name').val() == '')
+    {
+        notification('#validation_notification', 'open', 'Please Enter a Name', 'attention');
+        $('#name').focus();
+        return false;
+    }
+}
+</script>

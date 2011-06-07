@@ -15,6 +15,9 @@ if (!defined('BASEPATH'))
  * 
  *			@MODEL@ = Model Name (title case)
  * 			@VAR@ = Variable Name (lower case of @MODEL@)
+ * 			@ABBR@ = Doctrine Table Abbreviation (first lower case letter of @MODEL@)
+ *			@SORT@ = Doctrine Table Sort Column (column name to sort with)
+ *			@ORDER@ = Doctrine Table Sort Order (either ACS or DESC)
  *
  *			NOTE:  Don't use this template unless you are familiar with MICI
  */
@@ -113,8 +116,8 @@ class @MODEL@_model extends MI_Model
 		    try
 		    {
 				return Doctrine_Query::create()
-					->from('@MODEL@ c')
-					->orderBy('c.title ASC')
+					->from('@MODEL@ @ABBR@')
+					->orderBy('@ABBR@.@SORT@ @ORDER@')
 					->execute(array(), Doctrine_Core::HYDRATE_ARRAY);
 		    }
 		    catch (Doctrine_Connection_Exception $e)
@@ -129,5 +132,5 @@ class @MODEL@_model extends MI_Model
     }
 }
 
-/* End of file _template_model.php */
-/* Location: ./application/models/codeigniter/_template_model.php */
+/* End of file @VAR@_model.php */
+/* Location: ./application/models/codeigniter/@VAR@_model.php */

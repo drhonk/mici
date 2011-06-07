@@ -41,8 +41,8 @@
             </div>
             <?PHP
             $attributes = array(
-                'name' => 'tag_management',
-                'id' => 'tag_management',
+                'name' => '@VAR@_management',
+                'id' => '@VAR@_management',
                 'onsubmit' => 'return validate();'
             );
             echo form_open(current_url(), $attributes);
@@ -73,7 +73,7 @@
                     <tbody>
                     <?PHP foreach ($@VAR_PLURAL@ as $@VAR@): ?>
                         <tr>
-                            <td><input type="checkbox" value="<?PHP echo $@VAR@['id']; ?>" name="tags[]" /></td>
+                            <td><input type="checkbox" value="<?PHP echo $@VAR@['id']; ?>" name="@VAR_PLURAL@[]" /></td>
                             <td><?PHP echo anchor('admin/@CONTROLLER@/edit/id/' . $@VAR@['id'], $@VAR@['name'], array('title' => 'Edit ' . $@VAR@['name'])); ?></td>
                             <td><?PHP echo $@VAR@['created_at']; ?></td>
                             <td><?PHP echo $@VAR@['updated_at']; ?></td>
