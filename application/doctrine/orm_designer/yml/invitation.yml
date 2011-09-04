@@ -1,0 +1,121 @@
+Invitation:
+  actAs:
+    Versionable: 
+    Timestampable: 
+    Searchable:
+      fields: [invite_email,invite_code]
+    TrackAuthor: 
+  tableName: invitation
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    status:
+      default: issued
+      type: enum
+      notnull: true
+      values: [issued,accepted,expired]
+    invite_email:
+      unique: true
+      type: string(100)
+      notnull: true
+    invite_code:
+      unique: true
+      type: string(32)
+      notnull: true
+    sent_on:
+      type: date
+      notnull: true
+    From_id:
+      type: integer(10)
+      notnull: true
+    To_id:
+      type: integer(10)
+    InviteBulk_id:
+      type: integer(10)
+    InvitePhase_id:
+      type: integer(10)
+  relations:
+    User:
+      local: From_id
+      foreign: id
+    User:
+      local: To_id
+      foreign: id
+    InviteBulk:
+      local: InviteBulk_id
+      foreign: id
+    InvitePhase:
+      local: InvitePhase_id
+      foreign: id
+InvitePhase:
+  actAs:
+    Versionable: 
+    Timestampable: 
+    TrackAuthor: 
+  tableName: invite_phase
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    phase_name:
+      type: string(100)
+      notnull: true
+    mode:
+      default: both
+      type: enum
+      notnull: true
+      values: [both,use_date_range,fulfill_quantity]
+    is_active:
+      default: 0
+      type: boolean(1)
+      notnull: true
+      values: []
+    allow_bulk_invites:
+      default: 0
+      type: boolean(1)
+      notnull: true
+    start_date:
+      type: date
+      notnull: true
+    end_date:
+      type: date
+      notnull: true
+    per_user_quantity:
+      default: 0
+      type: integer(3)
+      notnull: true
+    total_invite_quantity:
+      default: 
+      type: integer(10)
+InviteBulk:
+  actAs:
+    Versionable: 
+    Timestampable: 
+    TrackAuthor: 
+  tableName: invite_bulk
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    bulk_code:
+      unique: true
+      type: string(32)
+      notnull: true
+    User_id:
+      type: integer(10)
+    InvitePhase_id:
+      type: integer(10)
+  relations:
+    User:
+      local: User_id
+      foreign: id
+    InvitePhase:
+      local: InvitePhase_id
+      foreign: id

@@ -1,5 +1,6 @@
 Apikey:
   actAs:
+    Versionable: 
     Timestampable: 
   tableName: apikey
   connection: default
@@ -78,7 +79,6 @@ Autologin:
       fields: [last_login]
   relations:
     User:
-      onDelete: CASCADE
       local: user_id
       foreign: id
 LoginAttempt:
@@ -95,7 +95,6 @@ LoginAttempt:
       fixed: false
     ip_address:
       type: string(40)
-      ip: true
     login:
       type: string(50)
     time:
@@ -115,23 +114,20 @@ Session:
   columns:
     session_id:
       primary: true
-      unique: true
-      type: string(32)
+      type: string(40)
       notnull: true
-      fixed: true
     ip_address:
       type: string(16)
       notnull: true
-      ip: true
     user_agent:
-      type: string(255)
+      type: string(50)
       notnull: true
     last_activity:
       unsigned: true
       type: integer(8)
       notnull: true
     user_data:
-      type: blob
+      type: string
       notnull: true
   indexes:
     session_id_index:
@@ -142,33 +138,16 @@ Session:
       fields: [user_agent]
     last_activity_index:
       fields: [last_activity]
-UserProfile:
-  actAs:
-    Versionable: 
-    Timestampable: 
-  tableName: user_profile
-  connection: default
-  columns:
-    id:
-      primary: true
-      unsigned: true
-      type: integer(10)
-      autoincrement: true
-    user_id:
-      type: integer(10)
-    country:
-      type: string(20)
-    website:
-      type: string(255)
-  relations:
-    User:
-      onDelete: CASCADE
-      local: user_id
-      foreign: id
 User:
   actAs:
     Versionable: 
     Timestampable: 
+    Sluggable:
+      unique: true
+      fields: [username]
+      uniqueBy: [username]
+      uniqueIndex: true
+      canUpdate: true
   tableName: user
   connection: default
   columns:
@@ -178,17 +157,16 @@ User:
       type: integer(10)
       autoincrement: true
     role:
-      default: client
-      type: enum(10)
+      default: buyer
+      type: enum
       notnull: true
-      values: [super_admin,admin,employee,contractor,client]
+      values: [super_admin,admin,buyer,agent,merchant]
     username:
       type: string(50)
     password:
       type: string(255)
     email:
       type: string(100)
-      email: true
     display_name:
       type: string(100)
     activated:
@@ -233,9 +211,7 @@ Access:
       type: string(32)
       fixed: true
     user_agent:
-      type: string(255)
-    referrer:
-      type: string(255)
+      type: string(50)
     ip_address:
       type: string(15)
       ip: true
@@ -256,28 +232,22 @@ Access:
     longitude:
       scale: 6
       type: decimal(15)
+    timezone:
+      type: integer(2)
+    gmtoffset:
+      type: integer(2)
+    dstoffset:
+      type: integer(2)
   indexes:
-    access_init:
-      fields: [ip_address, user_agent, session_id]
+    IX_Access_Init:
+      fields: [session_id, ip_address, user_agent]
       type: unique
-    access_country:
+    IX_Access_Country:
       fields: [country_code]
-    access_state:
+    IX_Access_State:
       fields: [region_name]
-    access_city:
+    IX_Access_City:
       fields: [city]
-    access_ipaddress:
-      fields: [ip_address]
-    access_country_code:
-      fields: [country_code]
-    access_country_name:
-      fields: [country_name]
-    IX_Access_1:
-      fields: [city]
-    access_postal_code:
-      fields: [zip_postal_code]
-    access_referrer:
-      fields: [referrer]
   relations:
     User:
       local: user_id
@@ -294,9 +264,9 @@ Activity:
       autoincrement: true
     access_id:
       type: integer(10)
-      notnull: true
     url_segment_1:
       type: string(50)
+      notnull: true
     url_segment_2:
       type: string(50)
     url_segment_3:
@@ -332,34 +302,10 @@ Activity:
       type: decimal(10)
       notnull: true
   indexes:
-    activity_controller:
+    IX_Activity_Controller:
       fields: [url_segment_1]
-    activity_method:
+    IX_Activity_Method:
       fields: [url_segment_2]
-    url_segment_1:
-      fields: [url_segment_1]
-    url_segment_2:
-      fields: [url_segment_2]
-    url_segment_3:
-      fields: [url_segment_3]
-    url_segment_4:
-      fields: [url_segment_4]
-    url_segment_5:
-      fields: [url_segment_5]
-    url_segment_6:
-      fields: [url_segment_6]
-    url_segment_7:
-      fields: [url_segment_7]
-    url_segment_8:
-      fields: [url_segment_8]
-    url_segment_9:
-      fields: [url_segment_9]
-    url_segment_10:
-      fields: [url_segment_10]
-    previous_page:
-      fields: [previuos_page]
-    current_page:
-      fields: [current_page]
   relations:
     Access:
       local: access_id
@@ -367,6 +313,7 @@ Activity:
 Maintenance:
   actAs:
     Versionable: 
+    Timestampable: 
   tableName: maintenance
   connection: default
   columns:
@@ -390,3 +337,25 @@ Maintenance:
     mm_data:
       fields: [recurring, start_datetime, end_datetime]
       type: unique
+Role:
+  actAs:
+    Versionable: 
+    Timestampable: 
+  tableName: role
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    User_id:
+      type: integer(10)
+    title:
+      unique: true
+      type: string(100)
+    description:
+      type: blob
+  relations:
+    User:
+      local: User_id
+      foreign: id

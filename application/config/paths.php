@@ -36,6 +36,7 @@ $config['media_abs_path'] = $framework_ini['paths']['media_abs_path'];
  */
 $config['assets_url'] = $framework_ini['paths']['assets_url'];
 $config['assets_abs_path'] = $framework_ini['paths']['assets_abs_path'];
+$config['forum_url'] = $framework_ini['paths']['forum_url'];
 
 /* End of file paths.php */
 /* Location: ./application/config/paths.php */

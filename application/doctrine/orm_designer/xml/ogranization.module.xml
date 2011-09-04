@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<orm-designer version="1.4.5.478">
+
+  <module description="Organization Module" import-format="DoctrineYml" import-path="..\yml\ogranization.yml" name="Organization" visBkColor="15658726" visSizeX="-150" visSizeX2="1130" visSizeY="0" visSizeY2="750">
+    <table description="Organization" name="Organization" visPositionX="800" visPositionY="400" visSizeX="0" visSizeX2="160" visSizeY="0" visSizeY2="269">
+      <column auto-increment="true" name="id" primary="true" size="10" type="integer"/>
+      <column description="Foreign Key to User ID of the owner of tihs Item" name="owner_id" size="10" type="integer"/>
+      <column default="0" description="Is this my organization or a relationship" name="is_my_oragnization" size="1" type="boolean"/>
+      <column description="State Incorprated" name="state_incorporated" size="2" type="string"/>
+      <column description="Year Incorporated" name="year_incorporated" size="4" type="integer"/>
+      <column description="Standard Industrial Classification Code" name="sic_code" size="6" type="string"/>
+      <column description="North American Industry Classification System" name="naics_code" size="8" type="string"/>
+      <column description="Data Universal Numbering System ID" name="duns" size="9" type="string"/>
+      <column description="Number for Org EIN or SSN" name="tax_id" size="9" type="string"/>
+      <column default="ein" description="What kind of tax id number was this" name="tax_id_type" type="enum" values="ein,ssn"/>
+      <column description="Organization Type" name="type" type="enum" values="agent,company,buyer"/>
+      <column default="pending" description="Org Status" name="status" type="enum" values="pending,active,disabled"/>
+      <column default="0" description="Require 1099 Form" name="require_1099" required="true" size="1" type="boolean"/>
+      <column name="image_company_logo" size="255" type="string"/>
+      <column name="image_avatar_public" size="255" type="string"/>
+      <column name="image_avatar_private" size="255" type="string"/>
+      <column name="ContactAddressBook_id" size="10" type="integer"/>
+      <index name="IX_Organization_1" unique="true">
+        <index-column name="owner_id"/>
+        <index-column name="type"/>
+      </index>
+      <orm-properties>
+        <attribute name="actAs">
+          <attribute name="Versionable"/>
+          <attribute name="Timestampable"/>
+          <attribute name="Taggable"/>
+          <attribute name="TrackAuthor"/>
+        </attribute>
+        <attribute name="connection">default</attribute>
+        <attribute name="tableName">organization</attribute>
+      </orm-properties>
+    </table>
+    <table description="Organization Staff" name="OrganizationStaff" visPositionX="606" visPositionY="50" visSizeX="0" visSizeX2="144" visSizeY="0" visSizeY2="59">
+      <column auto-increment="true" name="id" primary="true" size="10" type="integer"/>
+      <column description="Foreign Key to Organization for which this Staff Member belongs" name="Organization_id" size="10" type="integer"/>
+      <column description="Foreign Key to User Account the Staff Member can login with" name="User_id" size="10" type="integer"/>
+      <orm-properties>
+        <attribute name="connection">default</attribute>
+        <attribute name="tableName">organization_staff</attribute>
+        <attribute name="actAs">
+          <attribute name="Timestampable"/>
+          <attribute name="Versionable"/>
+          <attribute name="Taggable"/>
+          <attribute name="TrackAuthor"/>
+        </attribute>
+      </orm-properties>
+    </table>
+    <table description="Organization Relationship" name="OrganizationRelationship" visPositionX="350" visPositionY="50" visSizeX="0" visSizeX2="180" visSizeY="0" visSizeY2="73">
+      <column auto-increment="true" name="id" primary="true" size="10" type="integer"/>
+      <column name="relationship_type" type="enum" values="buyer,company,agent"/>
+      <column default="0" name="is_primary_agent" required="true" size="1" type="boolean"/>
+      <column name="Organization_id" required="true" size="10" type="integer"/>
+      <column name="Organization_relative_id" size="10" type="integer"/>
+      <orm-properties>
+        <attribute name="connection">default</attribute>
+        <attribute name="tableName">organization_relationship</attribute>
+        <attribute name="actAs">
+          <attribute name="Timestampable"/>
+          <attribute name="Versionable"/>
+          <attribute name="Taggable"/>
+          <attribute name="TrackAuthor"/>
+        </attribute>
+      </orm-properties>
+    </table>
+    <table description="Organization Teams" name="Team" visPositionX="506" visPositionY="400" visSizeX="0" visSizeX2="144" visSizeY="0" visSizeY2="73">
+      <column auto-increment="true" name="id" primary="true" size="10" type="integer"/>
+      <column name="Organization_id" size="10" type="integer"/>
+      <column description="Team Title" name="title" size="100" type="string"/>
+      <column default="enabled" description="Team Status" name="status" type="enum" values="enabled,disabled"/>
+      <orm-properties>
+        <attribute name="connection">default</attribute>
+        <attribute name="tableName">organization_team</attribute>
+        <attribute name="actAs">
+          <attribute name="Timestampable"/>
+          <attribute name="Versionable"/>
+          <attribute name="Taggable"/>
+          <attribute name="TrackAuthor"/>
+        </attribute>
+      </orm-properties>
+    </table>
+    <table description="Team Members" name="TeamMember" visPositionX="500" visPositionY="250" visSizeX="0" visSizeX2="166" visSizeY="0" visSizeY2="73">
+      <column auto-increment="true" name="id" primary="true" size="10" type="integer"/>
+      <column name="OrganizationStaff_id" size="10" type="integer"/>
+      <column name="Team_id" size="10" type="integer"/>
+      <column name="TeamRole_id" size="10" type="integer"/>
+      <orm-properties>
+        <attribute name="connection">default</attribute>
+        <attribute name="tableName">organization_team_member</attribute>
+        <attribute name="actAs">
+          <attribute name="Versionable"/>
+          <attribute name="Timestampable"/>
+          <attribute name="Taggable"/>
+          <attribute name="TrackAuthor"/>
+        </attribute>
+      </orm-properties>
+    </table>
+    <table description="Team Role Defaults" name="TeamRoleDefaults" visPositionX="700" visPositionY="300" visSizeX="0" visSizeX2="96" visSizeY="0" visSizeY2="59">
+      <column auto-increment="true" name="id" primary="true" size="10" type="integer"/>
+      <column description="Team Role Title" name="title" size="100" type="string" unique="true"/>
+      <column default="enabled" description="Status of Default Role" name="status" type="enum" values="enabled,disabled"/>
+      <orm-properties>
+        <attribute name="actAs">
+          <attribute name="Timestampable"/>
+        </attribute>
+        <attribute name="connection">default</attribute>
+        <attribute name="tableName">organization_team_role_defaults</attribute>
+      </orm-properties>
+    </table>
+    <table description="Team Role" name="TeamRole" visPositionX="250" visPositionY="450" visSizeX="0" visSizeX2="144" visSizeY="0" visSizeY2="73">
+      <column auto-increment="true" name="id" primary="true" size="10" type="integer"/>
+      <column name="title" size="100" type="string"/>
+      <column default="enabled" name="status" type="enum" values="enabled,disabled"/>
+      <column name="Organization_id" size="10" type="integer"/>
+      <orm-properties>
+        <attribute name="connection">default</attribute>
+        <attribute name="tableName">organization_team_role</attribute>
+        <attribute name="actAs">
+          <attribute name="Timestampable"/>
+          <attribute name="Versionable"/>
+          <attribute name="Taggable"/>
+          <attribute name="TrackAuthor"/>
+        </attribute>
+      </orm-properties>
+    </table>
+    <table description="Team Customers" name="TeamCustomer" visPositionX="350" visPositionY="300" visSizeX="0" visSizeX2="116" visSizeY="0" visSizeY2="45">
+      <column auto-increment="true" name="id" primary="true" size="10" type="integer"/>
+      <column name="Team_id" size="10" type="integer"/>
+      <orm-properties>
+        <attribute name="tableName">organization_team_customer</attribute>
+        <attribute name="connection">default</attribute>
+        <attribute name="actAs">
+          <attribute name="Timestampable"/>
+          <attribute name="Versionable"/>
+          <attribute name="Taggable"/>
+          <attribute name="TrackAuthor"/>
+        </attribute>
+      </orm-properties>
+    </table>
+    <foreign-key caption="User Organization" from="Organization" name="FK_Organization_User_id" to="User" visCaption1X="248" visCaption1Y="0" visCenterX="0" visCenterY="0">
+      <foreign-key-column from="owner_id" to="id"/>
+    </foreign-key>
+    <foreign-key caption="ContactAddressBook Organization" from="Organization" name="FK_Organization_ContactAddressBook_id" to="ContactAddressBook" visCaption1X="3" visCaption1Y="0" visCenterX="0" visCenterY="27">
+      <foreign-key-column from="ContactAddressBook_id" to="id"/>
+    </foreign-key>
+    <foreign-key caption="Organization OrginationStaff" from="OrganizationStaff" name="FK_OrginationStaff_Organization_id" to="Organization" visCaption1X="-70" visCaption1Y="1" visCenterX="0" visCenterY="-110">
+      <foreign-key-column from="Organization_id" to="id"/>
+    </foreign-key>
+    <foreign-key caption="User OrginationStaff" from="OrganizationStaff" name="FK_OrginationStaff_User_id" to="User" visCaption1X="420" visCaption1Y="10" visCenterX="-255" visCenterY="0">
+      <foreign-key-column from="User_id" to="id"/>
+    </foreign-key>
+    <foreign-key caption="Organization OrganizationRelationship" from="OrganizationRelationship" name="FK_OrganizationRelationship_Organization_id" to="Organization" visCaption1X="102" visCaption1Y="0" visCenterX="0" visCenterY="-45">
+      <foreign-key-column from="Organization_id" to="id"/>
+    </foreign-key>
+    <foreign-key caption="Organization OrganizationRelationship" from="OrganizationRelationship" name="FK_OrganizationRelationship_Organization_relative_id" to="Organization" visCaption1X="58" visCaption1Y="0" visCenterX="0" visCenterY="-77">
+      <foreign-key-column from="Organization_relative_id" to="id"/>
+    </foreign-key>
+    <foreign-key caption="Organization Team" from="Team" name="FK_Team_Organization_id" to="Organization" visCaption1X="60" visCaption1Y="24" visCenterX="-54" visCenterY="0">
+      <foreign-key-column from="Organization_id" to="id"/>
+    </foreign-key>
+    <foreign-key caption="OrganizationStaff TeamMember" from="TeamMember" name="FK_TeamMember_OrganizationStaff_id" to="OrganizationStaff" visCaption1X="-40" visCaption1Y="-2" visCenterX="0" visCenterY="-12">
+      <foreign-key-column from="OrganizationStaff_id" to="id"/>
+    </foreign-key>
+    <foreign-key caption="Team TeamMember" from="TeamMember" name="FK_TeamMember_Team_id" to="Team" visCaption1X="0" visCaption1Y="0" visCenterX="0" visCenterY="-12">
+      <foreign-key-column from="Team_id" to="id"/>
+    </foreign-key>
+    <foreign-key caption="TeamRole TeamMember" from="TeamMember" name="FK_TeamMember_TeamRole_id" to="TeamRole" visCaption1X="40" visCaption1Y="0" visCenterX="0" visCenterY="0">
+      <foreign-key-column from="TeamRole_id" to="id"/>
+    </foreign-key>
+    <foreign-key caption="Organization TeamRole" from="TeamRole" name="FK_TeamRole_Organization_id" to="Organization" visCaption1X="151" visCaption1Y="42" visCenterX="-143" visCenterY="0">
+      <foreign-key-column from="Organization_id" to="id"/>
+    </foreign-key>
+    <foreign-key caption="Team TeamCustomer" from="TeamCustomer" name="FK_TeamCustomer_Team_id" to="Team" visCaption1X="-99" visCaption1Y="0" visCenterX="60" visCenterY="0">
+      <foreign-key-column from="Team_id" to="id"/>
+    </foreign-key>
+  </module>
+
+</orm-designer>

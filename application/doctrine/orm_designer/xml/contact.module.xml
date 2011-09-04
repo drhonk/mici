@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<orm-designer version="1.4.5.478">
+
+  <module description="Contact Module for storing address book contacts and profiles." import-format="DoctrineYml" import-path="..\yml\contact.yml" name="Contact" visBkColor="14672614" visSizeX="0" visSizeX2="550" visSizeY="0" visSizeY2="800">
+    <table description="User Address Book" name="ContactAddressBook" visPositionX="49" visPositionY="50" visSizeX="0" visSizeX2="148" visSizeY="0" visSizeY2="171">
+      <column auto-increment="true" name="id" primary="true" size="10" type="integer"/>
+      <column default="active" description="Status" name="status" required="true" type="enum" values="active,disabled"/>
+      <column default="0" description="Is this an account proile" name="is_profile" required="true" size="1" type="boolean" values=""/>
+      <column default="individual" description="Address Book Type" name="type" type="enum" values="individual,company"/>
+      <column description="First Name" name="first_name" size="100" type="string"/>
+      <column description="Last Name" name="last_name" size="100" type="string"/>
+      <column description="Company Name" name="company_name" size="255" type="string"/>
+      <column description="Title" name="title" size="255" type="string"/>
+      <column description="Comment" name="comment" type="blob"/>
+      <column description="Default Method of Contact" name="default_contact" type="enum" values="mail,email,phone,website,messaging"/>
+      <column name="User_id" size="10" type="integer"/>
+      <orm-properties>
+        <attribute name="actAs">
+          <attribute name="Searchable">
+            <attribute name="fields">[first_name,last_name,company_name]</attribute>
+          </attribute>
+          <attribute name="Taggable"/>
+          <attribute name="Sluggable">
+            <attribute name="unique">false</attribute>
+            <attribute name="fields">[first_name,last_name,title]</attribute>
+            <attribute name="canUpdate">true</attribute>
+            <attribute name="options"></attribute>
+          </attribute>
+          <attribute name="Timestampable"/>
+          <attribute name="Versionable"/>
+          <attribute name="TrackAuthor"/>
+        </attribute>
+        <attribute name="connection">default</attribute>
+        <attribute name="tableName">contact_address_book</attribute>
+      </orm-properties>
+    </table>
+    <table description="Phone Numbers" name="ContactPhone" visPositionX="299" visPositionY="550" visSizeX="0" visSizeX2="181" visSizeY="0" visSizeY2="87">
+      <column auto-increment="true" name="id" primary="true" size="10" type="integer"/>
+      <column default="0" description="Is Default Option" name="is_default" required="true" size="1" type="boolean"/>
+      <column default="work" name="type" required="true" type="enum" values="work,mobile,fax,home,pager,skype,other"/>
+      <column name="number" size="100" type="string"/>
+      <column name="ContactAddressBook_id" size="10" type="integer"/>
+      <index name="is_default" unique="false">
+        <index-column name="is_default"/>
+      </index>
+      <index name="type" unique="false">
+        <index-column name="type"/>
+      </index>
+      <orm-properties>
+        <attribute name="actAs">
+          <attribute name="Timestampable"/>
+          <attribute name="Versionable"/>
+          <attribute name="TrackAuthor"/>
+          <attribute name="Searchable">
+            <attribute name="fields">[type,number]</attribute>
+          </attribute>
+        </attribute>
+        <attribute name="connection">default</attribute>
+        <attribute name="tableName">contact_address_book_phone</attribute>
+      </orm-properties>
+    </table>
+    <table description="Mailing Address" name="ContactAddress" visPositionX="49" visPositionY="550" visSizeX="0" visSizeX2="181" visSizeY="0" visSizeY2="213">
+      <column auto-increment="true" name="id" primary="true" size="10" type="integer"/>
+      <column default="0" description="Is Default Option" name="is_default" required="true" size="1" type="boolean"/>
+      <column description="Is Valid Address" name="is_valid" size="1" type="boolean"/>
+      <column description="Address Type" name="type" required="true" type="enum" values="work,home,other,physical,shipping,billing"/>
+      <column description="Country Code" name="country_code" required="true" size="2" type="string"/>
+      <column description="Country Name" name="country_name" required="true" size="100" type="string"/>
+      <column description="Region/State Name" name="region_name" required="true" size="100" type="string"/>
+      <column description="Address City" name="city" required="true" size="100" type="string"/>
+      <column description="Address" name="address" required="true" size="255" type="string"/>
+      <column description="Alternate Address" name="address_alt" size="255" type="string"/>
+      <column description="Zip/Postal Code" name="zip_postal_code" required="true" size="10" type="string"/>
+      <column description="Geographical Latitude" name="latitude" size="15" type="decimal">
+        <orm-properties>
+          <attribute name="scale">6</attribute>
+        </orm-properties>
+      </column>
+      <column description="Geographical Longitude" name="longitude" size="15" type="decimal">
+        <orm-properties>
+          <attribute name="scale">6</attribute>
+        </orm-properties>
+      </column>
+      <column name="ContactAddressBook_id" size="10" type="integer"/>
+      <index name="address_trype" unique="false">
+        <index-column name="type"/>
+      </index>
+      <index name="country_code" unique="false">
+        <index-column name="country_code"/>
+      </index>
+      <index name="region_name" unique="false">
+        <index-column name="region_name"/>
+      </index>
+      <index name="city" unique="false">
+        <index-column name="city"/>
+      </index>
+      <index name="postal_code" unique="false">
+        <index-column name="zip_postal_code"/>
+      </index>
+      <index name="is_default" unique="false">
+        <index-column name="is_default"/>
+      </index>
+      <index name="is_valid" unique="false">
+        <index-column name="is_valid"/>
+      </index>
+      <orm-properties>
+        <attribute name="actAs">
+          <attribute name="Timestampable"/>
+          <attribute name="Versionable"/>
+          <attribute name="TrackAuthor"/>
+          <attribute name="Searchable">
+            <attribute name="fields">[type,address]</attribute>
+          </attribute>
+        </attribute>
+        <attribute name="connection">default</attribute>
+        <attribute name="tableName">contact_address_book_address</attribute>
+      </orm-properties>
+    </table>
+    <table description="Email Address" name="ContactEmail" visPositionX="335" visPositionY="224" visSizeX="0" visSizeX2="181" visSizeY="0" visSizeY2="87">
+      <column auto-increment="true" name="id" primary="true" size="10" type="integer"/>
+      <column default="0" description="Is Default Option" name="is_default" required="true" size="1" type="boolean"/>
+      <column default="work" description="Email Type" name="type" required="true" type="enum" values="work,home,other"/>
+      <column description="Email Address" name="email" required="true" size="255" type="string"/>
+      <column name="ContactAddressBook_id" size="10" type="integer"/>
+      <index name="email_address" unique="false">
+        <index-column name="email"/>
+      </index>
+      <index name="email_type" unique="false">
+        <index-column name="type"/>
+      </index>
+      <index name="is_default" unique="false">
+        <index-column name="is_default"/>
+      </index>
+      <orm-properties>
+        <attribute name="actAs">
+          <attribute name="Timestampable"/>
+          <attribute name="Versionable"/>
+          <attribute name="Searchable">
+            <attribute name="fields">[type,email]</attribute>
+          </attribute>
+          <attribute name="TrackAuthor"/>
+        </attribute>
+        <attribute name="connection">default</attribute>
+        <attribute name="tableName">contact_address_book_email</attribute>
+      </orm-properties>
+    </table>
+    <table description="Website" name="ContactWebsite" visPositionX="149" visPositionY="400" visSizeX="0" visSizeX2="181" visSizeY="0" visSizeY2="87">
+      <column auto-increment="true" name="id" primary="true" size="10" type="integer"/>
+      <column default="0" description="Is Default Option" name="is_default" required="true" size="1" type="boolean" values=""/>
+      <column default="work" description="Website Type" name="type" required="true" type="enum" values="work,home,other"/>
+      <column description="Website" name="website" required="true" size="255" type="string"/>
+      <column name="ContactAddressBook_id" size="10" type="integer"/>
+      <index name="type" unique="false">
+        <index-column name="type"/>
+      </index>
+      <index name="is_default" unique="false">
+        <index-column name="is_default"/>
+      </index>
+      <orm-properties>
+        <attribute name="connection">default</attribute>
+        <attribute name="tableName">contact_address_book_website</attribute>
+        <attribute name="actAs">
+          <attribute name="Timestampable"/>
+          <attribute name="Versionable"/>
+          <attribute name="TrackAuthor"/>
+          <attribute name="Searchable">
+            <attribute name="fields">[type,website]</attribute>
+          </attribute>
+        </attribute>
+      </orm-properties>
+    </table>
+    <foreign-key caption="User ContactAddressBook" from="ContactAddressBook" name="FK_ContactAddressBook_User_id" to="User" visCaption1X="22" visCaption1Y="0" visCenterX="0" visCenterY="0">
+      <foreign-key-column from="User_id" to="id"/>
+    </foreign-key>
+    <foreign-key caption="ContactAddressBook ContactPhone" from="ContactPhone" name="FK_ContactPhone_ContactAddressBook_id" to="ContactAddressBook" visCaption1X="-18" visCaption1Y="2" visCenterX="23" visCenterY="-47">
+      <foreign-key-column from="ContactAddressBook_id" to="id"/>
+    </foreign-key>
+    <foreign-key caption="ContactAddressBook ContactAddress" from="ContactAddress" name="FK_ContactAddress_ContactAddressBook_id" to="ContactAddressBook" visCaption1X="0" visCaption1Y="0" visCenterX="0" visCenterY="127">
+      <foreign-key-column from="ContactAddressBook_id" to="id"/>
+    </foreign-key>
+    <foreign-key caption="ContactAddressBook ContactEmail" from="ContactEmail" name="FK_ContactEmail_ContactAddressBook_id" to="ContactAddressBook">
+      <foreign-key-column from="ContactAddressBook_id" to="id"/>
+    </foreign-key>
+    <foreign-key caption="ContactAddressBook ContactWebsite" from="ContactWebsite" name="FK_ContactWebsite_ContactAddressBook_id" to="ContactAddressBook" visCaption1X="0" visCaption1Y="0" visCenterX="0" visCenterY="61">
+      <foreign-key-column from="ContactAddressBook_id" to="id"/>
+    </foreign-key>
+  </module>
+
+</orm-designer>

@@ -29,7 +29,7 @@ class Auth
 
     function __construct()
     {
-        $this->ci = & get_instance();
+        $this->ci =& get_instance();
         $this->ci->load->model('codeigniter/auth/user_model');
         $this->ci->load->config('auth', TRUE);
 
@@ -105,7 +105,7 @@ class Auth
                             }
 
                             $this->clear_login_attempts($login);
-                            $this->ci->user_model->update_login_info($user->id, $this->ci->config->item('login_record_ip', 'auth'), $this->ci->config->item('login_record_time', 'auth'));
+                            $this->ci->user_model->update_login_info($user->id, $this->ci->config->item('login_record_ip'), $this->ci->config->item('login_record_time'));
                             return TRUE;
                         }
                     }
@@ -113,7 +113,7 @@ class Auth
                 // fail - wrong password
                 else
                 {
-                    $this->increase_login_attempt($login);
+					$this->increase_login_attempt($login);
                     $this->error = array('password' => 'auth_incorrect_password');
                 }
             }
@@ -124,6 +124,7 @@ class Auth
                 $this->error = array('login' => 'auth_incorrect_login');
             }
         }
+
         return FALSE;
     }
 
@@ -147,6 +148,10 @@ class Auth
             'tracking_current_page' => NULL,
             'tracking_current_time' => NULL
         );
+
+		$this->ci->load->helper('cookie');
+		delete_cookie('Vanilla');
+
         $this->delete_autologin();
         $this->ci->session->set_userdata($user_data);
         $this->ci->session->unset_userdata($user_data);
@@ -196,15 +201,16 @@ class Auth
      * @param	bool
      * @return	array
      */
-    function create_user($username, $email, $password, $email_activation)
+    function create_user($username, $email, $password, $email_activation, $firstname='', $lastname='', $role='')
     {
-        if ((strlen($username) > 0) && !$this->ci->user_model->is_username_available($username))
+		
+		if ((strlen($username) > 0) && !$this->ci->user_model->is_username_available($username))
         {
             $this->error = array('username' => 'auth_username_in_use');
         }
         elseif (!$this->ci->user_model->is_email_available($email))
         {
-            $this->error = array('email' => 'auth_email_in_use');
+			$this->error = array('email' => 'auth_email_in_use');
         }
         else
         {
@@ -216,8 +222,10 @@ class Auth
                 'username' => $username,
                 'password' => $hashed_password,
                 'email' => $email,
-                'role' => $this->ci->config->item('default_role', 'auth'),
-                'last_ip' => $this->ci->input->ip_address()
+                'role' => ( !empty($role)) ? $role : $this->ci->config->item('default_role'),
+				'first_name' => $firstname,
+				'last_name' => $lastname,
+				'display_name' => $firstname.' '.$lastname
             );
 
             if ($email_activation)
@@ -232,6 +240,7 @@ class Auth
                 return $data;
             }
         }
+
         return NULL;
     }
 
@@ -309,12 +318,13 @@ class Auth
      */
     function activate_user($user_id, $activation_key, $activate_by_email = TRUE)
     {
-        $this->ci->user_model->purge_na($this->ci->config->item('email_activation_expire', 'auth'));
+        $this->ci->user_model->purge_na($this->ci->config->item('email_activation_expire'));
 
         if ((strlen($user_id) > 0) && (strlen($activation_key) > 0))
         {
             return $this->ci->user_model->activate_user($user_id, $activation_key, $activate_by_email);
         }
+
         return FALSE;
     }
 
@@ -361,7 +371,7 @@ class Auth
     {
         if ((strlen($user_id) > 0) && (strlen($new_pass_key) > 0))
         {
-            return $this->ci->user_model->can_reset_password($user_id, $new_pass_key, $this->ci->config->item('forgot_password_expire', 'auth'));
+            return $this->ci->user_model->can_reset_password($user_id, $new_pass_key, $this->ci->config->item('forgot_password_expire'));
         }
         return FALSE;
     }
@@ -385,7 +395,7 @@ class Auth
                 $hashed_password = $hasher->HashPassword($new_password);
 
                 // success
-                if ($this->ci->user_model->reset_password($user_id, $hashed_password, $new_pass_key, $this->ci->config->item('forgot_password_expire', 'auth')))
+                if ($this->ci->user_model->reset_password($user_id, $hashed_password, $new_pass_key, $this->ci->config->item('forgot_password_expire')))
                 {
                     // Clear all user's autologins
                     $this->ci->load->model('codeigniter/auth/user_autologin_model');
@@ -570,9 +580,9 @@ class Auth
         if ($this->ci->user_autologin_model->set($user_id, md5($key)))
         {
             set_cookie(array(
-                'name' => $this->ci->config->item('autologin_cookie_name', 'auth'),
+                'name' => $this->ci->config->item('autologin_cookie_name'),
                 'value' => serialize(array('user_id' => $user_id, 'key' => $key)),
-                'expire' => $this->ci->config->item('autologin_cookie_life', 'auth')
+                'expire' => $this->ci->config->item('autologin_cookie_life')
             ));
             return TRUE;
         }
@@ -587,14 +597,14 @@ class Auth
     private function delete_autologin()
     {
         $this->ci->load->helper('cookie');
-        if ($cookie = get_cookie($this->ci->config->item('autologin_cookie_name', 'auth'), TRUE))
+        if ($cookie = get_cookie($this->ci->config->item('autologin_cookie_name'), TRUE))
         {
             $data = unserialize($cookie);
 
             $this->ci->load->model('codeigniter/auth/user_autologin_model');
             $this->ci->user_autologin_model->delete($data['user_id'], md5($data['key']));
 
-            delete_cookie($this->ci->config->item('autologin_cookie_name', 'auth'));
+            delete_cookie($this->ci->config->item('autologin_cookie_name'));
         }
         if ($cookie = get_cookie($this->ci->config->item('sess_cookie_name'), TRUE))
         {
@@ -614,7 +624,7 @@ class Auth
         {
 
             $this->ci->load->helper('cookie');
-            if ($cookie = get_cookie($this->ci->config->item('autologin_cookie_name', 'auth'), TRUE))
+            if ($cookie = get_cookie($this->ci->config->item('autologin_cookie_name'), TRUE))
             {
                 $data = unserialize($cookie);
 
@@ -635,12 +645,12 @@ class Auth
 
                         // Renew users cookie to prevent it from expiring
                         set_cookie(array(
-                            'name' => $this->ci->config->item('autologin_cookie_name', 'auth'),
+                            'name' => $this->ci->config->item('autologin_cookie_name'),
                             'value' => $cookie,
-                            'expire' => $this->ci->config->item('autologin_cookie_life', 'auth')
+                            'expire' => $this->ci->config->item('autologin_cookie_life')
                         ));
 
-                        $this->ci->user_model->update_login_info($user->id, $this->ci->config->item('login_record_ip', 'auth'), $this->ci->config->item('login_record_time', 'auth'));
+                        $this->ci->user_model->update_login_info($user->id, $this->ci->config->item('login_record_ip'), $this->ci->config->item('login_record_time'));
 
                         return TRUE;
                     }
@@ -658,10 +668,10 @@ class Auth
      */
     function is_max_login_attempts_exceeded($login)
     {
-        if ($this->ci->config->item('login_count_attempts', 'auth'))
+        if ($this->ci->config->item('login_count_attempts'))
         {
             $this->ci->load->model('codeigniter/auth/login_attempt_model');
-            return $this->ci->login_attempt_model->get_attempts_num($this->ci->input->ip_address(), $login) >= $this->ci->config->item('login_max_attempts', 'auth');
+            return $this->ci->login_attempt_model->get_attempts_num($this->ci->input->ip_address(), $login) >= $this->ci->config->item('login_max_attempts');
         }
         return FALSE;
     }
@@ -691,7 +701,7 @@ class Auth
      */
     private function increase_login_attempt($login)
     {
-        if ($this->ci->config->item('login_count_attempts', 'auth'))
+        if ($this->ci->config->item('login_count_attempts'))
         {
             if (!$this->is_max_login_attempts_exceeded($login))
             {
@@ -710,10 +720,10 @@ class Auth
      */
     private function clear_login_attempts($login)
     {
-        if ($this->ci->config->item('login_count_attempts', 'auth'))
+        if ($this->ci->config->item('login_count_attempts'))
         {
             $this->ci->load->model('codeigniter/auth/login_attempt_model');
-            $this->ci->login_attempt_model->clear_attempts($this->ci->input->ip_address(), $login, $this->ci->config->item('login_attempt_expire', 'auth'));
+            $this->ci->login_attempt_model->clear_attempts($this->ci->input->ip_address(), $login, $this->ci->config->item('login_attempt_expire'));
         }
     }
 }

@@ -67,6 +67,8 @@ abstract class BaseMaintenance extends Doctrine_Record
     {
         parent::setUp();
         $versionable0 = new Doctrine_Template_Versionable();
+        $timestampable0 = new Doctrine_Template_Timestampable();
         $this->actAs($versionable0);
+        $this->actAs($timestampable0);
     }
 }

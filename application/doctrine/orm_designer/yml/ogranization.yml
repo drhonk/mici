@@ -1,0 +1,235 @@
+Organization:
+  actAs:
+    Versionable: 
+    Timestampable: 
+    Taggable: 
+    TrackAuthor: 
+  tableName: organization
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    owner_id:
+      type: integer(10)
+    is_my_oragnization:
+      default: 0
+      type: boolean(1)
+    state_incorporated:
+      type: string(2)
+    year_incorporated:
+      type: integer(4)
+    sic_code:
+      type: string(6)
+    naics_code:
+      type: string(8)
+    duns:
+      type: string(9)
+    tax_id:
+      type: string(9)
+    tax_id_type:
+      default: ein
+      type: enum
+      values: [ein,ssn]
+    type:
+      type: enum
+      values: [agent,company,buyer]
+    status:
+      default: pending
+      type: enum
+      values: [pending,active,disabled]
+    require_1099:
+      default: 0
+      type: boolean(1)
+      notnull: true
+    image_company_logo:
+      type: string(255)
+    image_avatar_public:
+      type: string(255)
+    image_avatar_private:
+      type: string(255)
+    ContactAddressBook_id:
+      type: integer(10)
+  indexes:
+    IX_Organization_1:
+      fields: [owner_id, type]
+      type: unique
+  relations:
+    User:
+      local: owner_id
+      foreign: id
+    ContactAddressBook:
+      local: ContactAddressBook_id
+      foreign: id
+OrganizationStaff:
+  actAs:
+    Versionable: 
+    Timestampable: 
+    Taggable: 
+    TrackAuthor: 
+  tableName: organization_staff
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    Organization_id:
+      type: integer(10)
+    User_id:
+      type: integer(10)
+  relations:
+    Organization:
+      local: Organization_id
+      foreign: id
+    User:
+      local: User_id
+      foreign: id
+OrganizationRelationship:
+  actAs:
+    Versionable: 
+    Timestampable: 
+    Taggable: 
+    TrackAuthor: 
+  tableName: organization_relationship
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    relationship_type:
+      type: enum
+      values: [buyer,company,agent]
+    is_primary_agent:
+      default: 0
+      type: boolean(1)
+      notnull: true
+    Organization_id:
+      type: integer(10)
+      notnull: true
+    Organization_relative_id:
+      type: integer(10)
+  relations:
+    Organization:
+      local: Organization_id
+      foreign: id
+    Organization:
+      local: Organization_relative_id
+      foreign: id
+Team:
+  actAs:
+    Versionable: 
+    Timestampable: 
+    Taggable: 
+    TrackAuthor: 
+  tableName: organization_team
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    Organization_id:
+      type: integer(10)
+    title:
+      type: string(100)
+    status:
+      default: enabled
+      type: enum
+      values: [enabled,disabled]
+  relations:
+    Organization:
+      local: Organization_id
+      foreign: id
+TeamMember:
+  actAs:
+    Versionable: 
+    Timestampable: 
+    Taggable: 
+    TrackAuthor: 
+  tableName: organization_team_member
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    OrganizationStaff_id:
+      type: integer(10)
+    Team_id:
+      type: integer(10)
+    TeamRole_id:
+      type: integer(10)
+  relations:
+    OrganizationStaff:
+      local: OrganizationStaff_id
+      foreign: id
+    Team:
+      local: Team_id
+      foreign: id
+    TeamRole:
+      local: TeamRole_id
+      foreign: id
+TeamRoleDefaults:
+  actAs:
+    Timestampable: 
+  tableName: organization_team_role_defaults
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    title:
+      unique: true
+      type: string(100)
+    status:
+      default: enabled
+      type: enum
+      values: [enabled,disabled]
+TeamRole:
+  actAs:
+    Versionable: 
+    Timestampable: 
+    Taggable: 
+    TrackAuthor: 
+  tableName: organization_team_role
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    title:
+      type: string(100)
+    status:
+      default: enabled
+      type: enum
+      values: [enabled,disabled]
+    Organization_id:
+      type: integer(10)
+  relations:
+    Organization:
+      local: Organization_id
+      foreign: id
+TeamCustomer:
+  actAs:
+    Versionable: 
+    Timestampable: 
+    Taggable: 
+    TrackAuthor: 
+  tableName: organization_team_customer
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    Team_id:
+      type: integer(10)
+  relations:
+    Team:
+      local: Team_id
+      foreign: id

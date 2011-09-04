@@ -2,8 +2,32 @@
 	width:100%;
 	text-align:center;
 	position:fixed;
-	bottom:0;
-        z-index: 100000 !important;
+	bottom:-100px;
+    z-index: 100000 !important;
+}
+.profiler_helper_tab {
+	width: 75px;
+	text-align:center;
+	position:fixed;
+	bottom:0px;
+    z-index: 100000 !important;
+	right: 20px;
+	background-color:#222;
+	color: #999;
+	height: 30px;
+	line-height: 30px;
+	font-family:"Lucida Grande", Tahoma, Arial, sans-serif;
+	-webkit-border-top-left-radius:5px;
+	-webkit-border-top-right-radius:5px;
+	-moz-border-radius-topleft:5px;
+	-moz-border-radius-topright:5px;
+	cursor: pointer;
+	border: 1px solid #666;
+	border-bottom: none;
+}
+.profiler_helper_tab:hover {
+	height: 34px;
+	line-height: 30px;
 }
 * html .profiler_helper{
 	position:absolute;
@@ -177,6 +201,7 @@
 .profiler_helper .main td, pre{
 	font-family:Monaco, "Consolas", "Lucida Console", "Courier New", monospace;
 	font-size:11px;
+	background-color: #222 !important;
 }
 .profiler_helper .main td.alt{
 	background:#111;

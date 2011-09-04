@@ -40,10 +40,18 @@ class Login_attempt_model extends MI_Model
      */
     function increase_attempt($ip_address, $login)
     {
-        $login_attempt = new LoginAttempt();
-        $login_attempt->ip_address = $ip_address;
-        $login_attempt->login = $login;
-        $login_attempt->save();
+        try
+        {
+			$login_attempt = new LoginAttempt();
+	        $login_attempt->ip_address = $ip_address;
+	        $login_attempt->login = $login;
+			$login_attempt->time = date('H:i:s');
+	        $login_attempt->save();
+		}
+		catch (Doctrine_Connection_Exception $e)
+        {
+        	exit($e->getMessage());
+        }
     }
 
     /**
@@ -61,8 +69,8 @@ class Login_attempt_model extends MI_Model
     {
         Doctrine_Query::create()
             ->delete('LoginAttempt')
-            ->where('ip_address = ?', $ip_address)
-            ->andWhere('login = ?', $login)
+            ->where("ip_address = '{$ip_address}'")
+            ->andWhere("login = '{$login}'")
             ->orWhere('UNIX_TIMESTAMP(time) < ?', time() - $expire_period)
             ->execute();
     }
@@ -83,8 +91,8 @@ class Login_attempt_model extends MI_Model
             $q = Doctrine_Query::create()
                     ->from('LoginAttempt')
                     ->select('*')
-                    ->where('ip_address = ?', $ip_address)
-                    ->orWhere('login = ?', $login)
+                    ->where("ip_address = '{$ip_address}'")
+                    ->orWhere("login = '{$login}'")
                     ->execute();
         }
         else
@@ -92,7 +100,7 @@ class Login_attempt_model extends MI_Model
             $q = Doctrine_Query::create()
                     ->from('LoginAttempt')
                     ->select('*')
-                    ->where('ip_address = ?', $ip_address)
+                    ->where("ip_address = '{$ip_address}'")
                     ->execute();
         }
         return $q->count();

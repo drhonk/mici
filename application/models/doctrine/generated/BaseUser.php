@@ -22,8 +22,14 @@ Doctrine_Manager::getInstance()->bindComponent('User', 'default');
  * @property string $new_email_key
  * @property Doctrine_Collection $Apikey
  * @property Doctrine_Collection $Autologin
- * @property Doctrine_Collection $UserProfile
  * @property Doctrine_Collection $Access
+ * @property Doctrine_Collection $Role
+ * @property Doctrine_Collection $ContactAddressBook
+ * @property Doctrine_Collection $Invitation
+ * @property Doctrine_Collection $InviteBulk
+ * @property Doctrine_Collection $JanrainEngage
+ * @property Doctrine_Collection $Organization
+ * @property Doctrine_Collection $OrganizationStaff
  * 
  * @package    ##PACKAGE##
  * @subpackage ##SUBPACKAGE##
@@ -42,19 +48,18 @@ abstract class BaseUser extends Doctrine_Record
              'autoincrement' => true,
              'length' => '10',
              ));
-        $this->hasColumn('role', 'enum', 10, array(
-             'default' => 'client',
+        $this->hasColumn('role', 'enum', null, array(
+             'default' => 'buyer',
              'type' => 'enum',
              'notnull' => true,
              'values' => 
              array(
               0 => 'super_admin',
               1 => 'admin',
-              2 => 'employee',
-              3 => 'contractor',
-              4 => 'client',
+              2 => 'buyer',
+              3 => 'agent',
+              4 => 'merchant',
              ),
-             'length' => '10',
              ));
         $this->hasColumn('username', 'string', 50, array(
              'type' => 'string',
@@ -66,7 +71,6 @@ abstract class BaseUser extends Doctrine_Record
              ));
         $this->hasColumn('email', 'string', 100, array(
              'type' => 'string',
-             'email' => true,
              'length' => '100',
              ));
         $this->hasColumn('display_name', 'string', 100, array(
@@ -140,17 +144,55 @@ abstract class BaseUser extends Doctrine_Record
              'local' => 'id',
              'foreign' => 'user_id'));
 
-        $this->hasMany('UserProfile', array(
-             'local' => 'id',
-             'foreign' => 'user_id'));
-
         $this->hasMany('Access', array(
              'local' => 'id',
              'foreign' => 'user_id'));
 
+        $this->hasMany('Role', array(
+             'local' => 'id',
+             'foreign' => 'User_id'));
+
+        $this->hasMany('ContactAddressBook', array(
+             'local' => 'id',
+             'foreign' => 'User_id'));
+
+        $this->hasMany('Invitation', array(
+             'local' => 'id',
+             'foreign' => 'To_id'));
+
+        $this->hasMany('InviteBulk', array(
+             'local' => 'id',
+             'foreign' => 'User_id'));
+
+        $this->hasMany('JanrainEngage', array(
+             'local' => 'id',
+             'foreign' => 'User_id'));
+
+        $this->hasMany('Organization', array(
+             'local' => 'id',
+             'foreign' => 'owner_id'));
+
+        $this->hasMany('OrganizationStaff', array(
+             'local' => 'id',
+             'foreign' => 'User_id'));
+
         $versionable0 = new Doctrine_Template_Versionable();
         $timestampable0 = new Doctrine_Template_Timestampable();
+        $sluggable0 = new Doctrine_Template_Sluggable(array(
+             'unique' => true,
+             'fields' => 
+             array(
+              0 => 'username',
+             ),
+             'uniqueBy' => 
+             array(
+              0 => 'username',
+             ),
+             'uniqueIndex' => true,
+             'canUpdate' => true,
+             ));
         $this->actAs($versionable0);
         $this->actAs($timestampable0);
+        $this->actAs($sluggable0);
     }
 }

@@ -71,7 +71,9 @@ class UsersController extends MI_Controller
             'developer' => 'Developer',
             'editor' => 'Editor',
             'moderator' => 'Moderator',
-            'user' => 'User'
+            'buyer' => 'ESSpree Buyer',
+			'agent' => 'ESSpree Agent',
+			'merchant' => 'ESSpree Merchant'
         );
 
         $data['users'] = $this->users_model->get();

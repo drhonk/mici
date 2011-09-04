@@ -112,7 +112,7 @@ $config['charset'] = $framework_ini['config']['charset'];
   | setting this variable to TRUE (boolean).  See the user guide for details.
   |
  */
-$config['enable_hooks'] = $framework_ini['config']['enable_hooks'];
+$config['enable_hooks'] = ($framework_ini['config']['enable_hooks']) ? TRUE:FALSE;
 
 
 /*
@@ -175,8 +175,8 @@ $config['permitted_uri_chars'] = 'a-z 0-9~%.:_\-';
   | use segment based URLs.
   |
  */
-$config['allow_get_array'] = $framework_ini['config']['allow_get_array'];
-$config['enable_query_strings'] = $framework_ini['config']['enable_query_strings'];
+$config['allow_get_array'] = ($framework_ini['config']['allow_get_array']) ? TRUE:FALSE;
+$config['enable_query_strings'] = ($framework_ini['config']['enable_query_strings']) ? TRUE:FALSE;
 $config['controller_trigger'] = 'c';
 $config['function_trigger'] = 'm';
 $config['directory_trigger'] = 'd'; // experimental not currently in use
@@ -265,7 +265,7 @@ $config['encryption_key'] = md5($framework_ini['config']['sess_cookie_name']);
  */
 $config['sess_cookie_name'] = $framework_ini['config']['sess_cookie_name'];
 $config['sess_expiration'] = 0;
-$config['sess_expire_on_close']	= FALSE;
+$config['sess_expire_on_close']	= TRUE;
 $config['sess_encrypt_cookie'] = TRUE;
 $config['sess_use_database'] = TRUE;
 $config['sess_table_name'] = 'session';
@@ -287,7 +287,7 @@ $config['sess_time_to_update'] = 300;
 $config['cookie_prefix'] = $framework_ini['config']['cookie_prefix'];
 $config['cookie_domain'] = $framework_ini['config']['cookie_domain'];
 $config['cookie_path'] = $framework_ini['config']['cookie_path'];
-$config['cookie_secure'] = $framework_ini['config']['cookie_secure'];
+$config['cookie_secure'] = ($framework_ini['config']['cookie_secure']) ? TRUE:FALSE;
 
 /*
   |--------------------------------------------------------------------------
@@ -298,7 +298,7 @@ $config['cookie_secure'] = $framework_ini['config']['cookie_secure'];
   | COOKIE data is encountered
   |
  */
-$config['global_xss_filtering'] = $framework_ini['config']['global_xss_filtering'];
+$config['global_xss_filtering'] = ($framework_ini['config']['global_xss_filtering']) ? TRUE:FALSE;
 
 /*
 |--------------------------------------------------------------------------
@@ -312,9 +312,9 @@ $config['global_xss_filtering'] = $framework_ini['config']['global_xss_filtering
 | 'csrf_cookie_name' = The cookie name
 | 'csrf_expire' = The number in seconds the token should expire.
 */
-$config['csrf_protection'] = $framework_ini['config']['csrf_protection'];
+$config['csrf_protection'] = ($framework_ini['config']['csrf_protection']) ? TRUE:FALSE;
 $config['csrf_token_name'] = $framework_ini['config']['csrf_token_name'];
-$config['csrf_cookie_name'] = $framework_ini['config']['csrf_cookie_name'];'csrf_cookie_name';
+$config['csrf_cookie_name'] = $framework_ini['config']['csrf_cookie_name'];
 $config['csrf_expire'] = $framework_ini['config']['csrf_expire'];
 
 /*
@@ -334,7 +334,7 @@ $config['csrf_expire'] = $framework_ini['config']['csrf_expire'];
   | by the output class.  Do not "echo" any values with compression enabled.
   |
  */
-$config['compress_output'] = $framework_ini['config']['compress_output'];
+$config['compress_output'] = ($framework_ini['config']['compress_output']) ? TRUE:FALSE;
 
 /*
   |--------------------------------------------------------------------------
@@ -384,7 +384,7 @@ $config['proxy_ips'] = '';
   | Enables default MICI Framework Tracking of User Activity
   |
  */
-$config['tracking_enabled'] = $framework_ini['config']['tracking_enabled'];
+$config['tracking_enabled'] = ($framework_ini['config']['tracking_enabled']) ? TRUE:FALSE;
 
 
 /* End of file config.php */

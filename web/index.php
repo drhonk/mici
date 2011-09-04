@@ -43,6 +43,7 @@ if (defined('ENVIRONMENT'))
 		break;
 	
 		case 'testing':
+		case 'staging':
 		case 'production':
 			error_reporting(0);
 		break;
@@ -205,16 +206,6 @@ if (defined('ENVIRONMENT'))
  *
  */
 require_once BASEPATH.'core/CodeIgniter'.EXT;
-
-/*
- * -------------------------------------------------------------------
- *  Force Close MySQL Connection
- * -------------------------------------------------------------------
- */
-
-$conn = Doctrine_Manager::connection();
-$manager = Doctrine_Manager::getInstance();
-$manager->closeConnection($conn);
 
 /* End of file index.php */
 /* Location: ./index.php */

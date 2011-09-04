@@ -708,8 +708,9 @@ function profiler_helper_display($output, $config)
     }
 
     $html .= '</div>' . "\n";
-    $html .= '<table id="profiler-footer" cellspacing="0"><tr><td class="credit"><a href="http://www.manifestinteractive.com" target="_blank">Manifest Interactive, LLC</a></td><td class="actions"><a href="#" onclick="toggleDetails();return false">Details</a><a class="heightToggle" href="#" onclick="toggleHeight();return false">Height</a></td></tr></table>' . "\n";
+    $html .= '<table id="profiler-footer" cellspacing="0"><tr><td class="credit"><a href="http://www.manifestinteractive.com" target="_blank">Manifest Interactive, LLC</a></td><td class="actions"><a href="#" onclick="hideProfiler();return false">Close</a><a href="#" onclick="toggleDetails();return false">Details</a><a class="heightToggle" href="#" onclick="toggleHeight();return false">Height</a></td></tr></table>' . "\n";
     $html .= '</div></div>' . "\n";
+	$html .= '<div class="profiler_helper_tab" id="profiler_helper_tab" onclick="showProfiler();">Profiler</div>' . "\n";
 
     echo $html;
 }

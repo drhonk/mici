@@ -26,6 +26,8 @@ if (!defined('BASEPATH'))
  */
 
 // This is required to load the Exceptions library early enough
+
+/*
 $hook['pre_system'][] = array(
     'function' => 'load_exceptions',
     'filename' => 'errorhandler.php',
@@ -85,6 +87,7 @@ $hook['post_controller'][] = array(
     'filename' => 'doctrine_profiler_hooks.php',
     'filepath' => 'hooks',
 );
+*/
 
 /* End of file hooks.php */
 /* Location: ./application/config/hooks.php */

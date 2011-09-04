@@ -1,5 +1,6 @@
 Apikey:
   actAs:
+    Versionable: 
     Timestampable: 
   tableName: apikey
   connection: default
@@ -78,7 +79,6 @@ Autologin:
       fields: [last_login]
   relations:
     User:
-      onDelete: CASCADE
       local: user_id
       foreign: id
 LoginAttempt:
@@ -95,7 +95,6 @@ LoginAttempt:
       fixed: false
     ip_address:
       type: string(40)
-      ip: true
     login:
       type: string(50)
     time:
@@ -115,23 +114,20 @@ Session:
   columns:
     session_id:
       primary: true
-      unique: true
-      type: string(32)
+      type: string(40)
       notnull: true
-      fixed: true
     ip_address:
       type: string(16)
       notnull: true
-      ip: true
     user_agent:
-      type: string(255)
+      type: string(50)
       notnull: true
     last_activity:
       unsigned: true
       type: integer(8)
       notnull: true
     user_data:
-      type: blob
+      type: string
       notnull: true
   indexes:
     session_id_index:
@@ -142,33 +138,16 @@ Session:
       fields: [user_agent]
     last_activity_index:
       fields: [last_activity]
-UserProfile:
-  actAs:
-    Versionable: 
-    Timestampable: 
-  tableName: user_profile
-  connection: default
-  columns:
-    id:
-      primary: true
-      unsigned: true
-      type: integer(10)
-      autoincrement: true
-    user_id:
-      type: integer(10)
-    country:
-      type: string(20)
-    website:
-      type: string(255)
-  relations:
-    User:
-      onDelete: CASCADE
-      local: user_id
-      foreign: id
 User:
   actAs:
     Versionable: 
     Timestampable: 
+    Sluggable:
+      unique: true
+      fields: [username]
+      uniqueBy: [username]
+      uniqueIndex: true
+      canUpdate: true
   tableName: user
   connection: default
   columns:
@@ -178,17 +157,16 @@ User:
       type: integer(10)
       autoincrement: true
     role:
-      default: client
-      type: enum(10)
+      default: buyer
+      type: enum
       notnull: true
-      values: [super_admin,admin,employee,contractor,client]
+      values: [super_admin,admin,buyer,agent,merchant]
     username:
       type: string(50)
     password:
       type: string(255)
     email:
       type: string(100)
-      email: true
     display_name:
       type: string(100)
     activated:
@@ -233,9 +211,7 @@ Access:
       type: string(32)
       fixed: true
     user_agent:
-      type: string(255)
-    referrer:
-      type: string(255)
+      type: string(50)
     ip_address:
       type: string(15)
       ip: true
@@ -256,28 +232,22 @@ Access:
     longitude:
       scale: 6
       type: decimal(15)
+    timezone:
+      type: integer(2)
+    gmtoffset:
+      type: integer(2)
+    dstoffset:
+      type: integer(2)
   indexes:
-    access_init:
-      fields: [ip_address, user_agent, session_id]
+    IX_Access_Init:
+      fields: [session_id, ip_address, user_agent]
       type: unique
-    access_country:
+    IX_Access_Country:
       fields: [country_code]
-    access_state:
+    IX_Access_State:
       fields: [region_name]
-    access_city:
+    IX_Access_City:
       fields: [city]
-    access_ipaddress:
-      fields: [ip_address]
-    access_country_code:
-      fields: [country_code]
-    access_country_name:
-      fields: [country_name]
-    IX_Access_1:
-      fields: [city]
-    access_postal_code:
-      fields: [zip_postal_code]
-    access_referrer:
-      fields: [referrer]
   relations:
     User:
       local: user_id
@@ -294,9 +264,9 @@ Activity:
       autoincrement: true
     access_id:
       type: integer(10)
-      notnull: true
     url_segment_1:
       type: string(50)
+      notnull: true
     url_segment_2:
       type: string(50)
     url_segment_3:
@@ -332,34 +302,10 @@ Activity:
       type: decimal(10)
       notnull: true
   indexes:
-    activity_controller:
+    IX_Activity_Controller:
       fields: [url_segment_1]
-    activity_method:
+    IX_Activity_Method:
       fields: [url_segment_2]
-    url_segment_1:
-      fields: [url_segment_1]
-    url_segment_2:
-      fields: [url_segment_2]
-    url_segment_3:
-      fields: [url_segment_3]
-    url_segment_4:
-      fields: [url_segment_4]
-    url_segment_5:
-      fields: [url_segment_5]
-    url_segment_6:
-      fields: [url_segment_6]
-    url_segment_7:
-      fields: [url_segment_7]
-    url_segment_8:
-      fields: [url_segment_8]
-    url_segment_9:
-      fields: [url_segment_9]
-    url_segment_10:
-      fields: [url_segment_10]
-    previous_page:
-      fields: [previuos_page]
-    current_page:
-      fields: [current_page]
   relations:
     Access:
       local: access_id
@@ -367,6 +313,7 @@ Activity:
 Maintenance:
   actAs:
     Versionable: 
+    Timestampable: 
   tableName: maintenance
   connection: default
   columns:
@@ -390,6 +337,493 @@ Maintenance:
     mm_data:
       fields: [recurring, start_datetime, end_datetime]
       type: unique
+Role:
+  actAs:
+    Versionable: 
+    Timestampable: 
+  tableName: role
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    User_id:
+      type: integer(10)
+    title:
+      unique: true
+      type: string(100)
+    description:
+      type: blob
+  relations:
+    User:
+      local: User_id
+      foreign: id
+ContactAddressBook:
+  actAs:
+    Versionable: 
+    Timestampable: 
+    Sluggable:
+      unique: false
+      options: 
+      fields: [first_name,last_name,title]
+      canUpdate: true
+    Searchable:
+      fields: [first_name,last_name,company_name]
+    Taggable: 
+    TrackAuthor: 
+  tableName: contact_address_book
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    status:
+      default: active
+      type: enum
+      notnull: true
+      values: [active,disabled]
+    is_profile:
+      default: 0
+      type: boolean(1)
+      notnull: true
+      values: []
+    type:
+      default: individual
+      type: enum
+      values: [individual,company]
+    first_name:
+      type: string(100)
+    last_name:
+      type: string(100)
+    company_name:
+      type: string(255)
+    title:
+      type: string(255)
+    comment:
+      type: blob
+    default_contact:
+      type: enum
+      values: [mail,email,phone,website,messaging]
+    User_id:
+      type: integer(10)
+  relations:
+    User:
+      local: User_id
+      foreign: id
+ContactPhone:
+  actAs:
+    Versionable: 
+    Timestampable: 
+    Searchable:
+      fields: [type,number]
+    TrackAuthor: 
+  tableName: contact_address_book_phone
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    is_default:
+      default: 0
+      type: boolean(1)
+      notnull: true
+    type:
+      default: work
+      type: enum
+      notnull: true
+      values: [work,mobile,fax,home,pager,skype,other]
+    number:
+      type: string(100)
+    ContactAddressBook_id:
+      type: integer(10)
+  indexes:
+    is_default:
+      fields: [is_default]
+    type:
+      fields: [type]
+  relations:
+    ContactAddressBook:
+      local: ContactAddressBook_id
+      foreign: id
+ContactAddress:
+  actAs:
+    Versionable: 
+    Timestampable: 
+    Searchable:
+      fields: [type,address]
+    TrackAuthor: 
+  tableName: contact_address_book_address
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    is_default:
+      default: 0
+      type: boolean(1)
+      notnull: true
+    is_valid:
+      type: boolean(1)
+    type:
+      type: enum
+      notnull: true
+      values: [work,home,other,physical,shipping,billing]
+    country_code:
+      type: string(2)
+      notnull: true
+    country_name:
+      type: string(100)
+      notnull: true
+    region_name:
+      type: string(100)
+      notnull: true
+    city:
+      type: string(100)
+      notnull: true
+    address:
+      type: string(255)
+      notnull: true
+    address_alt:
+      type: string(255)
+    zip_postal_code:
+      type: string(10)
+      notnull: true
+    latitude:
+      scale: 6
+      type: decimal(15)
+    longitude:
+      scale: 6
+      type: decimal(15)
+    ContactAddressBook_id:
+      type: integer(10)
+  indexes:
+    address_trype:
+      fields: [type]
+    country_code:
+      fields: [country_code]
+    region_name:
+      fields: [region_name]
+    city:
+      fields: [city]
+    postal_code:
+      fields: [zip_postal_code]
+    is_default:
+      fields: [is_default]
+    is_valid:
+      fields: [is_valid]
+  relations:
+    ContactAddressBook:
+      local: ContactAddressBook_id
+      foreign: id
+ContactEmail:
+  actAs:
+    Versionable: 
+    Timestampable: 
+    Searchable:
+      fields: [type,email]
+    TrackAuthor: 
+  tableName: contact_address_book_email
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    is_default:
+      default: 0
+      type: boolean(1)
+      notnull: true
+    type:
+      default: work
+      type: enum
+      notnull: true
+      values: [work,home,other]
+    email:
+      type: string(255)
+      notnull: true
+    ContactAddressBook_id:
+      type: integer(10)
+  indexes:
+    email_address:
+      fields: [email]
+    email_type:
+      fields: [type]
+    is_default:
+      fields: [is_default]
+  relations:
+    ContactAddressBook:
+      local: ContactAddressBook_id
+      foreign: id
+ContactWebsite:
+  actAs:
+    Versionable: 
+    Timestampable: 
+    Searchable:
+      fields: [type,website]
+    TrackAuthor: 
+  tableName: contact_address_book_website
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    is_default:
+      default: 0
+      type: boolean(1)
+      notnull: true
+      values: []
+    type:
+      default: work
+      type: enum
+      notnull: true
+      values: [work,home,other]
+    website:
+      type: string(255)
+      notnull: true
+    ContactAddressBook_id:
+      type: integer(10)
+  indexes:
+    type:
+      fields: [type]
+    is_default:
+      fields: [is_default]
+  relations:
+    ContactAddressBook:
+      local: ContactAddressBook_id
+      foreign: id
+Invitation:
+  actAs:
+    Versionable: 
+    Timestampable: 
+    Searchable:
+      fields: [invite_email,invite_code]
+    TrackAuthor: 
+  tableName: invitation
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    status:
+      default: issued
+      type: enum
+      notnull: true
+      values: [issued,accepted,expired]
+    invite_email:
+      unique: true
+      type: string(100)
+      notnull: true
+    invite_code:
+      unique: true
+      type: string(32)
+      notnull: true
+    sent_on:
+      type: date
+      notnull: true
+    From_id:
+      type: integer(10)
+      notnull: true
+    To_id:
+      type: integer(10)
+    InviteBulk_id:
+      type: integer(10)
+    InvitePhase_id:
+      type: integer(10)
+  relations:
+    User:
+      local: From_id
+      foreign: id
+    User:
+      local: To_id
+      foreign: id
+    InviteBulk:
+      local: InviteBulk_id
+      foreign: id
+    InvitePhase:
+      local: InvitePhase_id
+      foreign: id
+InvitePhase:
+  actAs:
+    Versionable: 
+    Timestampable: 
+    TrackAuthor: 
+  tableName: invite_phase
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    phase_name:
+      type: string(100)
+      notnull: true
+    mode:
+      default: both
+      type: enum
+      notnull: true
+      values: [both,use_date_range,fulfill_quantity]
+    is_active:
+      default: 0
+      type: boolean(1)
+      notnull: true
+      values: []
+    allow_bulk_invites:
+      default: 0
+      type: boolean(1)
+      notnull: true
+    start_date:
+      type: date
+      notnull: true
+    end_date:
+      type: date
+      notnull: true
+    per_user_quantity:
+      default: 0
+      type: integer(3)
+      notnull: true
+    total_invite_quantity:
+      default: 
+      type: integer(10)
+InviteBulk:
+  actAs:
+    Versionable: 
+    Timestampable: 
+    TrackAuthor: 
+  tableName: invite_bulk
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    bulk_code:
+      unique: true
+      type: string(32)
+      notnull: true
+    User_id:
+      type: integer(10)
+    InvitePhase_id:
+      type: integer(10)
+  relations:
+    User:
+      local: User_id
+      foreign: id
+    InvitePhase:
+      local: InvitePhase_id
+      foreign: id
+JanrainEngage:
+  actAs:
+    Versionable: 
+    Timestampable: 
+    Searchable:
+      fields: [identifier]
+    TrackAuthor: 
+  tableName: janrain_engage
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    identifier:
+      unique: true
+      type: string(255)
+    provider_name:
+      type: string(100)
+    display_name:
+      type: string(100)
+    preferred_username:
+      type: string(100)
+    name:
+      type: string(100)
+    gender:
+      type: string(100)
+    birthday:
+      type: date
+    utc_offest:
+      type: string(25)
+    email:
+      type: string(100)
+    verfied_email:
+      type: string(100)
+    url:
+      type: string(100)
+    phone_number:
+      type: string(50)
+    photo:
+      type: string(255)
+    User_id:
+      type: integer(10)
+  relations:
+    User:
+      local: User_id
+      foreign: id
+JanrainEngageName:
+  actAs:
+    Versionable: 
+    Timestampable: 
+    TrackAuthor: 
+  tableName: janrain_engage_name
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    formatted:
+      type: string(255)
+    family_name:
+      type: string(50)
+    given_name:
+      type: string(50)
+    middle_name:
+      type: string(50)
+    honorific_prefix:
+      type: string(25)
+    honorific_suffix:
+      type: string(25)
+    Engage_id:
+      type: integer(10)
+  relations:
+    JanrainEngage:
+      local: Engage_id
+      foreign: id
+JanrainEngageAddress:
+  actAs:
+    Versionable: 
+    Timestampable: 
+    TrackAuthor: 
+  tableName: janrain_engage_address
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    formatted:
+      type: string(255)
+    street_address:
+      type: string(255)
+    locality:
+      type: string(100)
+    region:
+      type: string(50)
+    postal_code:
+      type: string(25)
+    country:
+      type: string(100)
+    Engage_id:
+      type: integer(10)
+  relations:
+    JanrainEngage:
+      local: Engage_id
+      foreign: id
 MigrationVersion:
   tableName: migration_version
   connection: default
@@ -401,6 +835,241 @@ MigrationVersion:
       autoincrement: true
     version:
       type: integer(10)
+Organization:
+  actAs:
+    Versionable: 
+    Timestampable: 
+    Taggable: 
+    TrackAuthor: 
+  tableName: organization
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    owner_id:
+      type: integer(10)
+    is_my_oragnization:
+      default: 0
+      type: boolean(1)
+    state_incorporated:
+      type: string(2)
+    year_incorporated:
+      type: integer(4)
+    sic_code:
+      type: string(6)
+    naics_code:
+      type: string(8)
+    duns:
+      type: string(9)
+    tax_id:
+      type: string(9)
+    tax_id_type:
+      default: ein
+      type: enum
+      values: [ein,ssn]
+    type:
+      type: enum
+      values: [agent,company,buyer]
+    status:
+      default: pending
+      type: enum
+      values: [pending,active,disabled]
+    require_1099:
+      default: 0
+      type: boolean(1)
+      notnull: true
+    image_company_logo:
+      type: string(255)
+    image_avatar_public:
+      type: string(255)
+    image_avatar_private:
+      type: string(255)
+    ContactAddressBook_id:
+      type: integer(10)
+  indexes:
+    IX_Organization_1:
+      fields: [owner_id, type]
+      type: unique
+  relations:
+    User:
+      local: owner_id
+      foreign: id
+    ContactAddressBook:
+      local: ContactAddressBook_id
+      foreign: id
+OrganizationStaff:
+  actAs:
+    Versionable: 
+    Timestampable: 
+    Taggable: 
+    TrackAuthor: 
+  tableName: organization_staff
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    Organization_id:
+      type: integer(10)
+    User_id:
+      type: integer(10)
+  relations:
+    Organization:
+      local: Organization_id
+      foreign: id
+    User:
+      local: User_id
+      foreign: id
+OrganizationRelationship:
+  actAs:
+    Versionable: 
+    Timestampable: 
+    Taggable: 
+    TrackAuthor: 
+  tableName: organization_relationship
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    relationship_type:
+      type: enum
+      values: [buyer,company,agent]
+    is_primary_agent:
+      default: 0
+      type: boolean(1)
+      notnull: true
+    Organization_id:
+      type: integer(10)
+      notnull: true
+    Organization_relative_id:
+      type: integer(10)
+  relations:
+    Organization:
+      local: Organization_id
+      foreign: id
+    Organization:
+      local: Organization_relative_id
+      foreign: id
+Team:
+  actAs:
+    Versionable: 
+    Timestampable: 
+    Taggable: 
+    TrackAuthor: 
+  tableName: organization_team
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    Organization_id:
+      type: integer(10)
+    title:
+      type: string(100)
+    status:
+      default: enabled
+      type: enum
+      values: [enabled,disabled]
+  relations:
+    Organization:
+      local: Organization_id
+      foreign: id
+TeamMember:
+  actAs:
+    Versionable: 
+    Timestampable: 
+    Taggable: 
+    TrackAuthor: 
+  tableName: organization_team_member
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    OrganizationStaff_id:
+      type: integer(10)
+    Team_id:
+      type: integer(10)
+    TeamRole_id:
+      type: integer(10)
+  relations:
+    OrganizationStaff:
+      local: OrganizationStaff_id
+      foreign: id
+    Team:
+      local: Team_id
+      foreign: id
+    TeamRole:
+      local: TeamRole_id
+      foreign: id
+TeamRoleDefaults:
+  actAs:
+    Timestampable: 
+  tableName: organization_team_role_defaults
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    title:
+      unique: true
+      type: string(100)
+    status:
+      default: enabled
+      type: enum
+      values: [enabled,disabled]
+TeamRole:
+  actAs:
+    Versionable: 
+    Timestampable: 
+    Taggable: 
+    TrackAuthor: 
+  tableName: organization_team_role
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    title:
+      type: string(100)
+    status:
+      default: enabled
+      type: enum
+      values: [enabled,disabled]
+    Organization_id:
+      type: integer(10)
+  relations:
+    Organization:
+      local: Organization_id
+      foreign: id
+TeamCustomer:
+  actAs:
+    Versionable: 
+    Timestampable: 
+    Taggable: 
+    TrackAuthor: 
+  tableName: organization_team_customer
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    Team_id:
+      type: integer(10)
+  relations:
+    Team:
+      local: Team_id
+      foreign: id
 Tag:
   actAs:
     Timestampable: 

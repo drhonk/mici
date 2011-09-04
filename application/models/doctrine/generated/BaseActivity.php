@@ -44,11 +44,11 @@ abstract class BaseActivity extends Doctrine_Record
              ));
         $this->hasColumn('access_id', 'integer', 10, array(
              'type' => 'integer',
-             'notnull' => true,
              'length' => '10',
              ));
         $this->hasColumn('url_segment_1', 'string', 50, array(
              'type' => 'string',
+             'notnull' => true,
              'length' => '50',
              ));
         $this->hasColumn('url_segment_2', 'string', 50, array(
@@ -115,88 +115,16 @@ abstract class BaseActivity extends Doctrine_Record
              ));
 
 
-        $this->index('activity_controller', array(
+        $this->index('IX_Activity_Controller', array(
              'fields' => 
              array(
               0 => 'url_segment_1',
              ),
              ));
-        $this->index('activity_method', array(
+        $this->index('IX_Activity_Method', array(
              'fields' => 
              array(
               0 => 'url_segment_2',
-             ),
-             ));
-        $this->index('url_segment_1', array(
-             'fields' => 
-             array(
-              0 => 'url_segment_1',
-             ),
-             ));
-        $this->index('url_segment_2', array(
-             'fields' => 
-             array(
-              0 => 'url_segment_2',
-             ),
-             ));
-        $this->index('url_segment_3', array(
-             'fields' => 
-             array(
-              0 => 'url_segment_3',
-             ),
-             ));
-        $this->index('url_segment_4', array(
-             'fields' => 
-             array(
-              0 => 'url_segment_4',
-             ),
-             ));
-        $this->index('url_segment_5', array(
-             'fields' => 
-             array(
-              0 => 'url_segment_5',
-             ),
-             ));
-        $this->index('url_segment_6', array(
-             'fields' => 
-             array(
-              0 => 'url_segment_6',
-             ),
-             ));
-        $this->index('url_segment_7', array(
-             'fields' => 
-             array(
-              0 => 'url_segment_7',
-             ),
-             ));
-        $this->index('url_segment_8', array(
-             'fields' => 
-             array(
-              0 => 'url_segment_8',
-             ),
-             ));
-        $this->index('url_segment_9', array(
-             'fields' => 
-             array(
-              0 => 'url_segment_9',
-             ),
-             ));
-        $this->index('url_segment_10', array(
-             'fields' => 
-             array(
-              0 => 'url_segment_10',
-             ),
-             ));
-        $this->index('previous_page', array(
-             'fields' => 
-             array(
-              0 => 'previuos_page',
-             ),
-             ));
-        $this->index('current_page', array(
-             'fields' => 
-             array(
-              0 => 'current_page',
              ),
              ));
     }

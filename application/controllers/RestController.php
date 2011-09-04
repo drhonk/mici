@@ -41,6 +41,8 @@ class RestController extends MI_Controller
     {
         parent::__construct();
 
+		$this->output->enable_profiler(FALSE);
+
         // Detect POST, DELETE, GET or PUT
         $this->_method = $this->_detect_method();
 

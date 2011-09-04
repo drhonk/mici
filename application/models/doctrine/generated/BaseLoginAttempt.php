@@ -32,7 +32,6 @@ abstract class BaseLoginAttempt extends Doctrine_Record
              ));
         $this->hasColumn('ip_address', 'string', 40, array(
              'type' => 'string',
-             'ip' => true,
              'length' => '40',
              ));
         $this->hasColumn('login', 'string', 50, array(

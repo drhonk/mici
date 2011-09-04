@@ -11,7 +11,6 @@ Doctrine_Manager::getInstance()->bindComponent('Access', 'default');
  * @property integer $user_id
  * @property string $session_id
  * @property string $user_agent
- * @property string $referrer
  * @property string $ip_address
  * @property string $country_code
  * @property string $country_name
@@ -20,6 +19,9 @@ Doctrine_Manager::getInstance()->bindComponent('Access', 'default');
  * @property string $zip_postal_code
  * @property decimal $latitude
  * @property decimal $longitude
+ * @property integer $timezone
+ * @property integer $gmtoffset
+ * @property integer $dstoffset
  * @property User $User
  * @property Doctrine_Collection $Activity
  * 
@@ -49,13 +51,9 @@ abstract class BaseAccess extends Doctrine_Record
              'fixed' => 1,
              'length' => '32',
              ));
-        $this->hasColumn('user_agent', 'string', 255, array(
+        $this->hasColumn('user_agent', 'string', 50, array(
              'type' => 'string',
-             'length' => '255',
-             ));
-        $this->hasColumn('referrer', 'string', 255, array(
-             'type' => 'string',
-             'length' => '255',
+             'length' => '50',
              ));
         $this->hasColumn('ip_address', 'string', 15, array(
              'type' => 'string',
@@ -93,69 +91,45 @@ abstract class BaseAccess extends Doctrine_Record
              'type' => 'decimal',
              'length' => '15',
              ));
+        $this->hasColumn('timezone', 'integer', 2, array(
+             'type' => 'integer',
+             'length' => '2',
+             ));
+        $this->hasColumn('gmtoffset', 'integer', 2, array(
+             'type' => 'integer',
+             'length' => '2',
+             ));
+        $this->hasColumn('dstoffset', 'integer', 2, array(
+             'type' => 'integer',
+             'length' => '2',
+             ));
 
 
-        $this->index('access_init', array(
+        $this->index('IX_Access_Init', array(
              'fields' => 
              array(
-              0 => 'ip_address',
-              1 => 'user_agent',
-              2 => 'session_id',
+              0 => 'session_id',
+              1 => 'ip_address',
+              2 => 'user_agent',
              ),
              'type' => 'unique',
              ));
-        $this->index('access_country', array(
+        $this->index('IX_Access_Country', array(
              'fields' => 
              array(
               0 => 'country_code',
              ),
              ));
-        $this->index('access_state', array(
+        $this->index('IX_Access_State', array(
              'fields' => 
              array(
               0 => 'region_name',
              ),
              ));
-        $this->index('access_city', array(
+        $this->index('IX_Access_City', array(
              'fields' => 
              array(
               0 => 'city',
-             ),
-             ));
-        $this->index('access_ipaddress', array(
-             'fields' => 
-             array(
-              0 => 'ip_address',
-             ),
-             ));
-        $this->index('access_country_code', array(
-             'fields' => 
-             array(
-              0 => 'country_code',
-             ),
-             ));
-        $this->index('access_country_name', array(
-             'fields' => 
-             array(
-              0 => 'country_name',
-             ),
-             ));
-        $this->index('IX_Access_1', array(
-             'fields' => 
-             array(
-              0 => 'city',
-             ),
-             ));
-        $this->index('access_postal_code', array(
-             'fields' => 
-             array(
-              0 => 'zip_postal_code',
-             ),
-             ));
-        $this->index('access_referrer', array(
-             'fields' => 
-             array(
-              0 => 'referrer',
              ),
              ));
     }

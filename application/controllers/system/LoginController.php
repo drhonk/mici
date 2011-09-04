@@ -101,7 +101,7 @@ class LoginController extends MI_Controller
                     )
                 )
                 {
-                    redirect('/system');
+					redirect('/system');
                 }
                 else
                 {

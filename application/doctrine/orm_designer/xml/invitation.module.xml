@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<orm-designer version="1.4.5.478">
+
+  <module description="Invite Manager" import-format="DoctrineYml" import-path="..\yml\invitation.yml" name="Invitation" visBkColor="15791863" visSizeX="0" visSizeX2="600" visSizeY="0" visSizeY2="400">
+    <table name="Invitation" visPositionX="50" visPositionY="50" visSizeX="0" visSizeX2="20" visSizeY="0" visSizeY2="20">
+      <column auto-increment="true" name="id" primary="true" size="10" type="integer"/>
+      <column default="issued" description="Status of Invite ( Defaults to issued )" name="status" required="true" type="enum" values="issued,accepted,expired"/>
+      <column description="Email address for invite" name="invite_email" required="true" size="100" type="string" unique="true"/>
+      <column description="Code to use to send to invite" name="invite_code" required="true" size="32" type="string" unique="true"/>
+      <column description="Date Invite Code was sent" name="sent_on" required="true" type="date"/>
+      <column description="Who sent the invite" name="From_id" required="true" size="10" type="integer"/>
+      <column description="Once the user registers, enter their user ID here" name="To_id" size="10" type="integer"/>
+      <column name="InviteBulk_id" size="10" type="integer"/>
+      <column name="InvitePhase_id" size="10" type="integer"/>
+      <orm-properties>
+        <attribute name="actAs">
+          <attribute name="Versionable"/>
+          <attribute name="TrackAuthor"/>
+          <attribute name="Timestampable"/>
+          <attribute name="Searchable">
+            <attribute name="fields">[invite_email,invite_code]</attribute>
+          </attribute>
+        </attribute>
+        <attribute name="connection">default</attribute>
+        <attribute name="tableName">invitation</attribute>
+      </orm-properties>
+    </table>
+    <table description="Invite Settings" name="InvitePhase" visPositionX="350" visPositionY="150" visSizeX="0" visSizeX2="166" visSizeY="0" visSizeY2="143">
+      <column auto-increment="true" name="id" primary="true" size="10" type="integer"/>
+      <column description="Custom Name for this phase of invites" name="phase_name" required="true" size="100" type="string"/>
+      <column default="both" description="Whether to make invite phase tied to a date range, fulfill a certain quantity, or both" name="mode" required="true" type="enum" values="both,use_date_range,fulfill_quantity"/>
+      <column default="0" description="Only one invite phase should be active at a time" name="is_active" required="true" size="1" type="boolean" values=""/>
+      <column default="0" description="Whether this phase should allow bulk invites" name="allow_bulk_invites" required="true" size="1" type="boolean"/>
+      <column description="Start date for invites" name="start_date" required="true" type="date"/>
+      <column description="End date for invites" name="end_date" required="true" type="date"/>
+      <column default="0" description="Max number of invitations a user can send" name="per_user_quantity" required="true" size="3" type="integer"/>
+      <column default="" description="Maximum number of invitations allowed during this phase" name="total_invite_quantity" size="10" type="integer"/>
+      <orm-properties>
+        <attribute name="connection">default</attribute>
+        <attribute name="tableName">invite_phase</attribute>
+        <attribute name="actAs">
+          <attribute name="Versionable"/>
+          <attribute name="TrackAuthor"/>
+          <attribute name="Timestampable"/>
+        </attribute>
+      </orm-properties>
+    </table>
+    <table description="Bulk Invitations" name="InviteBulk" visPositionX="50" visPositionY="250" visSizeX="0" visSizeX2="118" visSizeY="0" visSizeY2="59">
+      <column auto-increment="true" name="id" primary="true" size="10" type="integer"/>
+      <column name="bulk_code" required="true" size="32" type="string" unique="true"/>
+      <column name="User_id" size="10" type="integer"/>
+      <column name="InvitePhase_id" size="10" type="integer"/>
+      <orm-properties>
+        <attribute name="tableName">invite_bulk</attribute>
+        <attribute name="connection">default</attribute>
+        <attribute name="actAs">
+          <attribute name="Versionable"/>
+          <attribute name="TrackAuthor"/>
+          <attribute name="Timestampable"/>
+        </attribute>
+      </orm-properties>
+    </table>
+    <foreign-key caption="User From Invitation" from="Invitation" name="FK_Invitation_From_id" to="User" visCaption1X="40" visCaption1Y="1" visCenterX="0" visCenterY="0">
+      <foreign-key-column from="From_id" to="id"/>
+    </foreign-key>
+    <foreign-key caption="User To Invitation" from="Invitation" name="FK_Invitation_To_id" to="User" visCaption1X="33" visCaption1Y="2" visCenterX="0" visCenterY="0">
+      <foreign-key-column from="To_id" to="id"/>
+    </foreign-key>
+    <foreign-key caption="InviteBulk Invitation" from="Invitation" name="FK_Invitation_InviteBulk_id" to="InviteBulk">
+      <foreign-key-column from="InviteBulk_id" to="id"/>
+    </foreign-key>
+    <foreign-key caption="InvitePhase Invitation" from="Invitation" name="FK_Invitation_InvitePhase_id" to="InvitePhase" visCaption1X="-2" visCaption1Y="-37" visCenterX="0" visCenterY="0">
+      <foreign-key-column from="InvitePhase_id" to="id"/>
+    </foreign-key>
+    <foreign-key caption="User InviteBulk" from="InviteBulk" name="FK_InviteBulk_User_id" to="User" visCaption1X="23" visCaption1Y="0" visCenterX="0" visCenterY="0">
+      <foreign-key-column from="User_id" to="id"/>
+    </foreign-key>
+    <foreign-key caption="InvitePhase InviteBulk" from="InviteBulk" name="FK_InviteBulk_InvitePhase_id" to="InvitePhase" visCaption1X="-1" visCaption1Y="20" visCenterX="0" visCenterY="0">
+      <foreign-key-column from="InvitePhase_id" to="id"/>
+    </foreign-key>
+  </module>
+
+</orm-designer>

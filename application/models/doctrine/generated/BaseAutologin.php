@@ -89,8 +89,7 @@ abstract class BaseAutologin extends Doctrine_Record
         parent::setUp();
         $this->hasOne('User', array(
              'local' => 'user_id',
-             'foreign' => 'id',
-             'onDelete' => 'CASCADE'));
+             'foreign' => 'id'));
 
         $timestampable0 = new Doctrine_Template_Timestampable();
         $this->actAs($timestampable0);

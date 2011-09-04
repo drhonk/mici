@@ -1,0 +1,237 @@
+ContactAddressBook:
+  actAs:
+    Versionable: 
+    Timestampable: 
+    Sluggable:
+      unique: false
+      options: 
+      fields: [first_name,last_name,title]
+      canUpdate: true
+    Searchable:
+      fields: [first_name,last_name,company_name]
+    Taggable: 
+    TrackAuthor: 
+  tableName: contact_address_book
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    status:
+      default: active
+      type: enum
+      notnull: true
+      values: [active,disabled]
+    is_profile:
+      default: 0
+      type: boolean(1)
+      notnull: true
+      values: []
+    type:
+      default: individual
+      type: enum
+      values: [individual,company]
+    first_name:
+      type: string(100)
+    last_name:
+      type: string(100)
+    company_name:
+      type: string(255)
+    title:
+      type: string(255)
+    comment:
+      type: blob
+    default_contact:
+      type: enum
+      values: [mail,email,phone,website,messaging]
+    User_id:
+      type: integer(10)
+  relations:
+    User:
+      local: User_id
+      foreign: id
+ContactPhone:
+  actAs:
+    Versionable: 
+    Timestampable: 
+    Searchable:
+      fields: [type,number]
+    TrackAuthor: 
+  tableName: contact_address_book_phone
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    is_default:
+      default: 0
+      type: boolean(1)
+      notnull: true
+    type:
+      default: work
+      type: enum
+      notnull: true
+      values: [work,mobile,fax,home,pager,skype,other]
+    number:
+      type: string(100)
+    ContactAddressBook_id:
+      type: integer(10)
+  indexes:
+    is_default:
+      fields: [is_default]
+    type:
+      fields: [type]
+  relations:
+    ContactAddressBook:
+      local: ContactAddressBook_id
+      foreign: id
+ContactAddress:
+  actAs:
+    Versionable: 
+    Timestampable: 
+    Searchable:
+      fields: [type,address]
+    TrackAuthor: 
+  tableName: contact_address_book_address
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    is_default:
+      default: 0
+      type: boolean(1)
+      notnull: true
+    is_valid:
+      type: boolean(1)
+    type:
+      type: enum
+      notnull: true
+      values: [work,home,other,physical,shipping,billing]
+    country_code:
+      type: string(2)
+      notnull: true
+    country_name:
+      type: string(100)
+      notnull: true
+    region_name:
+      type: string(100)
+      notnull: true
+    city:
+      type: string(100)
+      notnull: true
+    address:
+      type: string(255)
+      notnull: true
+    address_alt:
+      type: string(255)
+    zip_postal_code:
+      type: string(10)
+      notnull: true
+    latitude:
+      scale: 6
+      type: decimal(15)
+    longitude:
+      scale: 6
+      type: decimal(15)
+    ContactAddressBook_id:
+      type: integer(10)
+  indexes:
+    address_trype:
+      fields: [type]
+    country_code:
+      fields: [country_code]
+    region_name:
+      fields: [region_name]
+    city:
+      fields: [city]
+    postal_code:
+      fields: [zip_postal_code]
+    is_default:
+      fields: [is_default]
+    is_valid:
+      fields: [is_valid]
+  relations:
+    ContactAddressBook:
+      local: ContactAddressBook_id
+      foreign: id
+ContactEmail:
+  actAs:
+    Versionable: 
+    Timestampable: 
+    Searchable:
+      fields: [type,email]
+    TrackAuthor: 
+  tableName: contact_address_book_email
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    is_default:
+      default: 0
+      type: boolean(1)
+      notnull: true
+    type:
+      default: work
+      type: enum
+      notnull: true
+      values: [work,home,other]
+    email:
+      type: string(255)
+      notnull: true
+    ContactAddressBook_id:
+      type: integer(10)
+  indexes:
+    email_address:
+      fields: [email]
+    email_type:
+      fields: [type]
+    is_default:
+      fields: [is_default]
+  relations:
+    ContactAddressBook:
+      local: ContactAddressBook_id
+      foreign: id
+ContactWebsite:
+  actAs:
+    Versionable: 
+    Timestampable: 
+    Searchable:
+      fields: [type,website]
+    TrackAuthor: 
+  tableName: contact_address_book_website
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    is_default:
+      default: 0
+      type: boolean(1)
+      notnull: true
+      values: []
+    type:
+      default: work
+      type: enum
+      notnull: true
+      values: [work,home,other]
+    website:
+      type: string(255)
+      notnull: true
+    ContactAddressBook_id:
+      type: integer(10)
+  indexes:
+    type:
+      fields: [type]
+    is_default:
+      fields: [is_default]
+  relations:
+    ContactAddressBook:
+      local: ContactAddressBook_id
+      foreign: id

@@ -1,49 +1,13 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us">
-<head>
-<title>Error 401</title>
-<style type="text/css">
-body
-{
-background-color: #fff;
-margin: 40px;
-font-family: Lucida Grande, Verdana, Sans-serif;
-font-size: 14px;
-color: #4F5155;
-}
-a
-{
-color: #003399;
-background-color: transparent;
-font-weight: normal;
-}
-h1
-{
-color: #444;
-background-color: transparent;
-border-bottom: 1px solid #D0D0D0;
-font-size: 16px;
-font-weight: bold;
-margin: 24px 0 2px 0;
-padding: 5px 0 6px 0;
-}
-code
-{
-font-family: Monaco, Verdana, Sans-serif;
-font-size: 12px;
-background-color: #f9f9f9;
-border: 1px solid #D0D0D0;
-color: #002166;
-display: block;
-margin: 14px 0 14px 0;
-padding: 12px 10px 12px 10px;
-}
-</style>
-</head>
-<body>
-<h1>Error 401</h1>
-<p>This is the default 401 error page.</p>
-<p>Edit <i>/application/views/browser/error/401.php</i> to change this page.</p>
-<p>Page rendered in {elapsed_time} seconds</p>
-</body>
-</html>
+			<div class="container_omega"> 
+				<div class="hr"></div> 
+				<p>&nbsp;</p> 
+				<div class="clearfix"></div> 
+				<h1 class="e404 alignleft"><strong>[401]</strong></h1> 
+				<h1>Unauthorized</h1> 
+				<h6 class="e404">The request requires user authentication. If the request included Authorization credentials, then authorization has been refused.</h6> 
+				
+				<p><a href="<?PHP echo base_url(); ?>" class="superbutton">Get me back to homepage!</a></p> 
+				
+				<div class="clearfix"></div> 
+				<div class="hr"></div> 
+			</div> 

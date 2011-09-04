@@ -105,7 +105,9 @@ abstract class BaseApikey extends Doctrine_Record
              'local' => 'user_id',
              'foreign' => 'id'));
 
+        $versionable0 = new Doctrine_Template_Versionable();
         $timestampable0 = new Doctrine_Template_Timestampable();
+        $this->actAs($versionable0);
         $this->actAs($timestampable0);
     }
 }

@@ -39,7 +39,7 @@
                         <tr>
                             <th width="25"><input class="check-all" type="checkbox" /></th>
                             <th width="150">Name</th>
-                            <th width="100">Role</th>
+                            <th width="125">Role</th>
                             <th width="100">Username</th>
                             <th width="125">Created</th>
                             <th>Last Modified</th>

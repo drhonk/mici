@@ -69,7 +69,7 @@ class Tracker extends MI_Model
                 $access->user_id = $user_id;
                 $access->user_agent = $this->ci->input->user_agent();
                 $access->ip_address = $ip;
-                $access->referrer = $this->ci->agent->referrer();
+                //$access->referrer = $this->ci->agent->referrer();
 
                 if($geo)
                 {

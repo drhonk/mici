@@ -8,6 +8,7 @@ if (!defined('BASEPATH'))
  * @subpackage Controller
  * @category HomeController
  * @author Peter Schmalfeldt <Peter@ManifestInteractive.com>
+ * @author Andy Whitesides <Andy@ManifestInteractive.com>
  */
 
 /**
@@ -21,11 +22,32 @@ class HomeController extends MI_Controller
         parent::__construct();
     }
 
+	/**
+	 * Home Page
+	 * 
+	 * @example http://www.esspree.com/
+	 * @return void
+	 * @access public
+	 */
     function index()
     {
-        $data = array();
+        /**
+		 * @var $data Array Merge MI_Controller $this->data with a local array
+		 */
+		$data = array();
         $data = array_merge($data, $this->data);
-        $this->load->view('browser/main/home', $data);
+
+		/**
+		 * Setup Local Variables to Pass to View
+		 */
+        $data['title'] = 'Welcome';
+		$data['description'] = '';
+		$data['keywords'] = '';
+
+		/**
+		 * Load Views
+		 */
+        $this->load->view('browser/main/home/home', $data);
     }
 }
 

@@ -113,3 +113,19 @@ function addEvent( obj, type, fn )
 		obj.addEventListener( type, fn, false );
 	}
 }
+function showProfiler()
+{
+	document.getElementById('profiler-container').style.bottom = '0px';
+	document.getElementById('profiler_helper_tab').style.display = 'none';
+}
+function hideProfiler()
+{	
+	changeTab('console');
+	
+	var container = document.getElementById('profiler-container');
+	addClassName(container, 'hideDetails', true);
+	PROFILER_DETAILS = false;
+	
+	document.getElementById('profiler-container').style.bottom = '-100px';
+	document.getElementById('profiler_helper_tab').style.display = 'block';
+}

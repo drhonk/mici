@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<orm-designer version="1.4.5.478">
+
+  <module description="Third Party Social Media Integration" import-format="DoctrineYml" import-path="..\yml\janrain.yml" name="Janrain" visBkColor="15791863" visSizeX="0" visSizeX2="600" visSizeY="150" visSizeY2="400">
+    <table name="JanrainEngage" visPositionX="50" visPositionY="-100" visSizeX="0" visSizeX2="165" visSizeY="0" visSizeY2="227">
+      <column auto-increment="true" name="id" primary="true" size="10" type="integer"/>
+      <column name="identifier" size="255" type="string" unique="true"/>
+      <column name="provider_name" size="100" type="string"/>
+      <column name="display_name" size="100" type="string"/>
+      <column name="preferred_username" size="100" type="string"/>
+      <column name="name" size="100" type="string"/>
+      <column name="gender" size="100" type="string"/>
+      <column name="birthday" type="date"/>
+      <column name="utc_offest" size="25" type="string"/>
+      <column name="email" size="100" type="string"/>
+      <column name="verfied_email" size="100" type="string"/>
+      <column name="url" size="100" type="string"/>
+      <column name="phone_number" size="50" type="string"/>
+      <column name="photo" size="255" type="string"/>
+      <column name="User_id" size="10" type="integer"/>
+      <orm-properties>
+        <attribute name="connection">default</attribute>
+        <attribute name="tableName">janrain_engage</attribute>
+        <attribute name="actAs">
+          <attribute name="TrackAuthor"/>
+          <attribute name="Versionable"/>
+          <attribute name="Timestampable"/>
+          <attribute name="Searchable">
+            <attribute name="fields">[identifier]</attribute>
+          </attribute>
+        </attribute>
+      </orm-properties>
+    </table>
+    <table name="JanrainEngageName" visPositionX="250" visPositionY="200" visSizeX="0" visSizeX2="142" visSizeY="0" visSizeY2="129">
+      <column auto-increment="true" name="id" primary="true" size="10" type="integer"/>
+      <column name="formatted" size="255" type="string"/>
+      <column name="family_name" size="50" type="string"/>
+      <column name="given_name" size="50" type="string"/>
+      <column name="middle_name" size="50" type="string"/>
+      <column name="honorific_prefix" size="25" type="string"/>
+      <column name="honorific_suffix" size="25" type="string"/>
+      <column name="Engage_id" size="10" type="integer"/>
+      <orm-properties>
+        <attribute name="connection">default</attribute>
+        <attribute name="tableName">janrain_engage_name</attribute>
+        <attribute name="actAs">
+          <attribute name="Versionable"/>
+          <attribute name="Timestampable"/>
+          <attribute name="TrackAuthor"/>
+        </attribute>
+      </orm-properties>
+    </table>
+    <table name="JanrainEngageAddress" visPositionX="400" visPositionY="-100" visSizeX="0" visSizeX2="143" visSizeY="0" visSizeY2="129">
+      <column auto-increment="true" name="id" primary="true" size="10" type="integer"/>
+      <column name="formatted" size="255" type="string"/>
+      <column name="street_address" size="255" type="string"/>
+      <column name="locality" size="100" type="string"/>
+      <column name="region" size="50" type="string"/>
+      <column name="postal_code" size="25" type="string"/>
+      <column name="country" size="100" type="string"/>
+      <column name="Engage_id" size="10" type="integer"/>
+      <orm-properties>
+        <attribute name="connection">default</attribute>
+        <attribute name="tableName">janrain_engage_address</attribute>
+        <attribute name="actAs">
+          <attribute name="Versionable"/>
+          <attribute name="TrackAuthor"/>
+          <attribute name="Timestampable"/>
+        </attribute>
+      </orm-properties>
+    </table>
+    <foreign-key caption="User Engage" from="JanrainEngage" name="FK_Engage_User_id" to="User" visCaption1X="-17" visCaption1Y="0" visCenterX="0" visCenterY="90">
+      <foreign-key-column from="User_id" to="id"/>
+    </foreign-key>
+    <foreign-key caption="Engage EngageName" from="JanrainEngageName" name="FK_EngageName_Engage_id" to="JanrainEngage">
+      <foreign-key-column from="Engage_id" to="id"/>
+    </foreign-key>
+    <foreign-key caption="Engage EngageAddress" from="JanrainEngageAddress" name="FK_EngageAddress_Engage_id" to="JanrainEngage">
+      <foreign-key-column from="Engage_id" to="id"/>
+    </foreign-key>
+  </module>
+
+</orm-designer>

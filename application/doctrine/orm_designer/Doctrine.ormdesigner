@@ -1,16 +1,40 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<orm-designer version="1.4.3.454">
+<orm-designer version="1.4.5.478">
 
   <include name="xml\access.module.xml"/>
 
+  <include name="xml\contact.module.xml"/>
+
+  <include name="xml\invitation.module.xml"/>
+
+  <include name="xml\janrain.module.xml"/>
+
+  <include name="xml\messaging.module.xml"/>
+
   <include name="xml\migration.module.xml"/>
+
+  <include name="xml\ogranization.module.xml"/>
+
+  <include name="xml\permission.module.xml"/>
+
+  <include name="xml\preference.module.xml"/>
+
+  <include name="xml\reporting.module.xml"/>
 
   <include name="xml\tag.module.xml"/>
 
-  <project code-name="DoctrineSchema" name="Doctrine" orm="Doctrine" visSizeX="0" visSizeX2="1150" visSizeY="0" visSizeY2="900">
-    <module-position name="Access" visPositionX="65" visPositionY="51"/>
-    <module-position name="Migration" visPositionX="350" visPositionY="700"/>
-    <module-position name="Tag" visPositionX="50" visPositionY="593"/>
+  <project code-name="ESSpree" description="ESSpree Object Relational Mapper" name="ESSpree" orm="Doctrine" visSizeX="-550" visSizeX2="2650" visSizeY="600" visSizeY2="1700">
+    <module-position name="Access" visPositionX="1710" visPositionY="51"/>
+    <module-position name="Contact" visPositionX="1500" visPositionY="850"/>
+    <module-position name="Invitation" visPositionX="2000" visPositionY="-400"/>
+    <module-position name="Janrain" visPositionX="1100" visPositionY="-400"/>
+    <module-position name="Messaging" visPositionX="2100" visPositionY="1200"/>
+    <module-position name="Migration" visPositionX="2100" visPositionY="969"/>
+    <module-position name="Organization" visPositionX="450" visPositionY="50"/>
+    <module-position name="Permission" visPositionX="2250" visPositionY="1200"/>
+    <module-position name="Preference" visPositionX="2250" visPositionY="1050"/>
+    <module-position name="Reporting" visPositionX="2100" visPositionY="1050"/>
+    <module-position name="Tag" visPositionX="2350" visPositionY="743"/>
   </project>
 
 </orm-designer>

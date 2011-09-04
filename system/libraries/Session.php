@@ -120,7 +120,7 @@ class CI_Session {
 
 		// Delete expired sessions if necessary
 		$this->_sess_gc();
-
+		
 		log_message('debug', "Session routines successfully run");
 	}
 

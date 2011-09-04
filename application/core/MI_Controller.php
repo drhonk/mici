@@ -34,6 +34,7 @@ class MI_Controller extends CI_Controller
         if ($this->uri->segment(1) !== 'admin' && $this->uri->segment(1) !== 'system')
         {
             $this->load->model('codeigniter/maintenance_mode');
+			$this->load->model('codeigniter/frontend_model');
             $this->load->helper('conversion');
             $status = $this->maintenance_mode->status();
 
@@ -81,7 +82,7 @@ class MI_Controller extends CI_Controller
 
         if (FRAMEWORK_APPLICATION_ENV === 'development')
         {
-            $this->output->enable_profiler(FALSE);
+            $this->output->enable_profiler(TRUE);
         }
         else
         {
@@ -109,7 +110,8 @@ class MI_Controller extends CI_Controller
 		$this->load->config('config');
 
         // load helpers
-        $this->load->helper('url');
+        $this->load->helper('form');
+		$this->load->helper('url');
         $this->load->helper('referrer_check');
         $this->load->helper('utf8_cleaner');
 
@@ -119,6 +121,7 @@ class MI_Controller extends CI_Controller
         $this->load->library('auth');
         $this->load->library('form_validation');
         $this->load->library('user_agent');
+		$this->load->library('engage');
 
 		// check if we should use native user tracking
 		if($this->config->item('tracking_enabled'))
@@ -133,14 +136,19 @@ class MI_Controller extends CI_Controller
         $this->media_url = $this->config->item('media_url');
         $this->assets_url = $this->config->item('assets_url');
         $this->base_url = $this->config->item('base_url');
+		$this->forum_url = $this->config->item('forum_url');
         $this->assets_abs_path = $this->config->item('assets_abs_path');
 
         $this->data['media_url'] = $this->media_url;
         $this->data['assets_url'] = $this->assets_url;
         $this->data['base_url'] = $this->base_url;
+		$this->data['forum_url'] = $this->forum_url;
         $this->data['assets_abs_path'] = $this->assets_abs_path;
         $this->data['section'] = $this->uri->segment(1);
         $this->data['subsection'] = $this->uri->segment(2);
+        $this->data['selected_tab'] = $this->uri->segment(3);
+		$this->data['userdata'] = $this->session->userdata;
+
 
         $this->data['browser'] = get_browser(null, true);
 

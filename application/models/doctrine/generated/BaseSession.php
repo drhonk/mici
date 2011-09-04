@@ -11,7 +11,7 @@ Doctrine_Manager::getInstance()->bindComponent('Session', 'default');
  * @property string $ip_address
  * @property string $user_agent
  * @property integer $last_activity
- * @property blob $user_data
+ * @property string $user_data
  * 
  * @package    ##PACKAGE##
  * @subpackage ##SUBPACKAGE##
@@ -23,23 +23,20 @@ abstract class BaseSession extends Doctrine_Record
     public function setTableDefinition()
     {
         $this->setTableName('session');
-        $this->hasColumn('session_id', 'string', 32, array(
+        $this->hasColumn('session_id', 'string', 40, array(
              'primary' => true,
-             'unique' => true,
              'type' => 'string',
-             'fixed' => 1,
-             'length' => '32',
+             'length' => '40',
              ));
         $this->hasColumn('ip_address', 'string', 16, array(
              'type' => 'string',
              'notnull' => true,
-             'ip' => true,
              'length' => '16',
              ));
-        $this->hasColumn('user_agent', 'string', 255, array(
+        $this->hasColumn('user_agent', 'string', 50, array(
              'type' => 'string',
              'notnull' => true,
-             'length' => '255',
+             'length' => '50',
              ));
         $this->hasColumn('last_activity', 'integer', 8, array(
              'unsigned' => true,
@@ -47,8 +44,8 @@ abstract class BaseSession extends Doctrine_Record
              'notnull' => true,
              'length' => '8',
              ));
-        $this->hasColumn('user_data', 'blob', null, array(
-             'type' => 'blob',
+        $this->hasColumn('user_data', 'string', null, array(
+             'type' => 'string',
              'notnull' => true,
              ));
 

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<orm-designer version="1.4.5.478">
+
+  <module description="Permission Module" import-format="DoctrineYml" import-path="..\yml\permission.yml" name="Permission" visBkColor="11979242" visSizeX="0" visSizeX2="100" visSizeY="0" visSizeY2="100"/>
+
+</orm-designer>

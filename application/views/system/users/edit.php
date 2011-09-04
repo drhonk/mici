@@ -52,6 +52,9 @@
                                     <option value=""<?PHP if($user['role'] == '') echo ' selected="selected"'; ?>>&nbsp;</option>
                                     <option value="admin"<?PHP if($user['role'] == 'admin') echo ' selected="selected"'; ?>>Admin</option>
                                     <option value="super_admin"<?PHP if($user['role'] == 'super_admin') echo ' selected="selected"'; ?>>Super Admin</option>
+									<option value="buyer"<?PHP if($user['role'] == 'buyer') echo ' selected="selected"'; ?>>ESSpree Buyer</option>
+									<option value="agent"<?PHP if($user['role'] == 'agent') echo ' selected="selected"'; ?>>ESSpree Agent</option>
+									<option value="merchant"<?PHP if($user['role'] == 'merchant') echo ' selected="selected"'; ?>>ESSpree Merchant</option>
                                 </select>
                                 <small style="color: #999">&nbsp; "Admin" can access /admin.&nbsp; "Super Admin" can access /admin &amp; /system.</small>
                             </td>

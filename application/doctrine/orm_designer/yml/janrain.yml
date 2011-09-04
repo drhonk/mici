@@ -1,0 +1,107 @@
+JanrainEngage:
+  actAs:
+    Versionable: 
+    Timestampable: 
+    Searchable:
+      fields: [identifier]
+    TrackAuthor: 
+  tableName: janrain_engage
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    identifier:
+      unique: true
+      type: string(255)
+    provider_name:
+      type: string(100)
+    display_name:
+      type: string(100)
+    preferred_username:
+      type: string(100)
+    name:
+      type: string(100)
+    gender:
+      type: string(100)
+    birthday:
+      type: date
+    utc_offest:
+      type: string(25)
+    email:
+      type: string(100)
+    verfied_email:
+      type: string(100)
+    url:
+      type: string(100)
+    phone_number:
+      type: string(50)
+    photo:
+      type: string(255)
+    User_id:
+      type: integer(10)
+  relations:
+    User:
+      local: User_id
+      foreign: id
+JanrainEngageName:
+  actAs:
+    Versionable: 
+    Timestampable: 
+    TrackAuthor: 
+  tableName: janrain_engage_name
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    formatted:
+      type: string(255)
+    family_name:
+      type: string(50)
+    given_name:
+      type: string(50)
+    middle_name:
+      type: string(50)
+    honorific_prefix:
+      type: string(25)
+    honorific_suffix:
+      type: string(25)
+    Engage_id:
+      type: integer(10)
+  relations:
+    JanrainEngage:
+      local: Engage_id
+      foreign: id
+JanrainEngageAddress:
+  actAs:
+    Versionable: 
+    Timestampable: 
+    TrackAuthor: 
+  tableName: janrain_engage_address
+  connection: default
+  columns:
+    id:
+      primary: true
+      type: integer(10)
+      autoincrement: true
+    formatted:
+      type: string(255)
+    street_address:
+      type: string(255)
+    locality:
+      type: string(100)
+    region:
+      type: string(50)
+    postal_code:
+      type: string(25)
+    country:
+      type: string(100)
+    Engage_id:
+      type: integer(10)
+  relations:
+    JanrainEngage:
+      local: Engage_id
+      foreign: id

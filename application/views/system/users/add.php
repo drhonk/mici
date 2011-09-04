@@ -52,6 +52,9 @@
                                     <option value="" selected="selected">&nbsp;</option>
                                     <option value="admin">Admin</option>
                                     <option value="super_admin">Super Admin</option>
+									<option value="buyer">ESSpree Buyer</option>
+									<option value="agent">ESSpree Agent</option>
+									<option value="merchant">ESSpree Merchant</option>
                                 </select>
                                 <small style="color: #999">&nbsp; "Admin" can access /admin.&nbsp; "Super Admin" can access /admin &amp; /system.</small>
                             </td>
